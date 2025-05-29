@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="1"
+    android:background="@color/white"
+    tools:context=".login.LoginUser">
+
+    <!-- Imagen: 50% del alto -->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:scaleType="fitCenter"
+        android:src="@drawable/__removebg_preview2"
+        android:padding="20dp"/>
+
+    <!-- Contenedor de los demás componentes: 50% -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:orientation="vertical"
+        android:weightSum="1"
+        android:gravity="top|center"
+        android:padding="20dp">
+
+        <!-- TextView: 10% -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.10"
+            android:gravity="center"
+            android:text="Iniciar Sesión"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <!-- Contenedor para EditTexts: 45% -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.45"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="20dp">
+
+            <EditText
+                android:id="@+id/txtUsername"
+                android:layout_width="260dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/borde_edittext"
+                android:hint="Ingrese Usuario"
+                android:inputType="text"
+                android:padding="12dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/textHint" />
+
+            <EditText
+                android:id="@+id/txtPassword"
+                android:layout_width="260dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@drawable/borde_edittext"
+                android:hint="Ingrese Contraseña"
+                android:inputType="textPassword"
+                android:padding="12dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/textHint" />
+        </LinearLayout>
+
+        <!-- Contenedor para Botones: 45% -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.45"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="20dp">
+
+            <Button
+                android:id="@+id/btnLoginUser"
+                android:layout_width="200dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                app:backgroundTint="@null"
+                android:background="@drawable/fondo_boton"
+                android:text="Iniciar Sesión"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:layout_marginBottom="15dp"/>
+
+            <Button
+                android:id="@+id/btnRegisterUser"
+                android:layout_width="200dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                app:backgroundTint="@null"
+                android:background="@drawable/fondo_boton"
+                android:text="Registrarse"
+                android:textColor="@color/white"
+                android:textSize="20sp"/>
+
+
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

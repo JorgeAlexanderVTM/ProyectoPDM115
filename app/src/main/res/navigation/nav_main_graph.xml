@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_main_graph"
+    app:startDestination="@id/locatePackageUserFragment">
+
+    <fragment
+        android:id="@+id/locatePackageUserFragment"
+        android:name="ues.pdm115.proyectopdm115grupo3.comprador.LocatePackageUser"
+        android:label="Home"
+        app:menu="@menu/toolbar_menu"/>
+
+</navigation>
+

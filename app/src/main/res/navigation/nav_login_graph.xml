@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_login_graph"
+    app:startDestination="@id/loginUserFragment">
+
+    <fragment
+        android:id="@+id/loginUserFragment"
+        android:name="ues.pdm115.proyectopdm115grupo3.login.LoginUser"
+        android:label="Login">
+        <action
+            android:id="@+id/action_loginUserFragment_to_selectUserType"
+            app:destination="@id/selectUserType" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/selectUserType"
+        android:name="ues.pdm115.proyectopdm115grupo3.login.SelectUserType"
+        android:label="Select User">
+        <action
+            android:id="@+id/action_selectUserType_to_registerUserFragment"
+            app:destination="@id/registerUserFragment" />
+        <action
+            android:id="@+id/action_selectUserType_to_registerRepartidorFragment"
+            app:destination="@id/registerRepartidorFragment" />
+        <action
+            android:id="@+id/action_selectUserType_to_registerNegocioFragment"
+            app:destination="@id/registerNegocioFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/registerUserFragment"
+        android:name="ues.pdm115.proyectopdm115grupo3.comprador.RegisterUser"
+        android:label="Register User"/>
+
+    <fragment
+        android:id="@+id/registerRepartidorFragment"
+        android:name="ues.pdm115.proyectopdm115grupo3.repartidor.RegisterRepartidor"
+        android:label="Register Repartidor"/>
+
+    <fragment
+        android:id="@+id/registerNegocioFragment"
+        android:name="ues.pdm115.proyectopdm115grupo3.negocio.RegisterNegocio"
+        android:label="Register Negocio"/>
+
+</navigation>

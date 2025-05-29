@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_repartidor_graph"
+    app:startDestination="@id/homeRepartidor">
+
+    <fragment
+        android:id="@+id/homeRepartidor"
+        android:name="ues.pdm115.proyectopdm115grupo3.repartidor.HomeRepartidor"
+        android:label="EnvíoRapido"
+        app:menu="@menu/toolbar_menu">
+
+        <action
+            android:id="@+id/action_homeRepartidor_to_entregasAsignadas"
+            app:destination="@id/entregasAsignadas" />
+
+        <action
+            android:id="@+id/action_homeRepartidor_to_mapaRutaActiva"
+            app:destination="@id/mapaRutaActiva" />
+
+        <action
+            android:id="@+id/action_homeRepartidor_to_historialEntregas"
+            app:destination="@id/historialEntregas" />
+
+        <action
+            android:id="@+id/action_homeRepartidor_to_validacionCodigoEntrega"
+            app:destination="@id/validacionCodigoEntrega" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/entregasAsignadas"
+        android:name="ues.pdm115.proyectopdm115grupo3.repartidor.EntregasAsignadas"
+        android:label="EnvíoRapido"
+        app:menu="@menu/toolbar_menu"/>
+
+    <fragment
+        android:id="@+id/mapaRutaActiva"
+        android:name="ues.pdm115.proyectopdm115grupo3.repartidor.MapaRutaActiva"
+        android:label="EnvíoRapido"
+        app:menu="@menu/toolbar_menu"/>
+
+    <fragment
+        android:id="@+id/historialEntregas"
+        android:name="ues.pdm115.proyectopdm115grupo3.repartidor.HistorialEntregas"
+        android:label="EnvíoRapido"
+        app:menu="@menu/toolbar_menu"/>
+
+    <fragment
+        android:id="@+id/validacionCodigoEntrega"
+        android:name="ues.pdm115.proyectopdm115grupo3.repartidor.ValidacionCodigoEntrega"
+        android:label="EnvíoRapido"
+        app:menu="@menu/toolbar_menu"/>
+
+</navigation>

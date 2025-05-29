@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    tools:context=".login.SelectUserType">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:padding="40dp">
+
+        <!-- Botones -->
+        <Button
+            android:id="@+id/btnNegocio"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.33"
+            android:layout_marginBottom="40dp"
+            app:backgroundTint="@null"
+            android:background="@drawable/fondo_boton"
+            android:backgroundTint="#4296B3"
+            android:text="Negocio"
+            android:textColor="@color/white"
+            android:textSize="45sp" />
+
+        <Button
+            android:id="@+id/btnComprador"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.33"
+            android:layout_marginBottom="40dp"
+            app:backgroundTint="@null"
+            android:background="@drawable/fondo_boton"
+            android:backgroundTint="#4296B3"
+            android:text="Comprador"
+            android:textColor="@color/white"
+            android:textSize="45sp" />
+
+        <Button
+            android:id="@+id/btnRepartidor"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.33"
+            app:backgroundTint="@null"
+            android:background="@drawable/fondo_boton"
+            android:backgroundTint="#4296B3"
+            android:text="Repartidor"
+            android:textColor="@color/white"
+            android:textSize="45sp" />
+
+    </LinearLayout>
+</LinearLayout>
