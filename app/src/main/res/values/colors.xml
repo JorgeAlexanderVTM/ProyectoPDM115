@@ -2,6 +2,9 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="textHint">#8A000000</color>
+    <color name="textHint">#FF616161</color>
     <color name="toolbar_repartidor">#FF47484F</color>
+    <color name="color_btn_primary">#FF4296B3</color>
+    <color name="foreground">#FFE7E7E7</color>
+
 </resources>

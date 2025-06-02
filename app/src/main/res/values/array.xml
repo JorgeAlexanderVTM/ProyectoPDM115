@@ -1,0 +1,538 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="departamentos_el_salvador">
+        <item>Departamento</item>
+        <item>Ahuachapán</item>
+        <item>Cabañas</item>
+        <item>Chalatenango</item>
+        <item>Cuscatlán</item>
+        <item>La Libertad</item>
+        <item>La Paz</item>
+        <item>La Unión</item>
+        <item>Morazán</item>
+        <item>San Miguel</item>
+        <item>San Salvador</item>
+        <item>San Vicente</item>
+        <item>Santa Ana</item>
+        <item>Sonsonate</item>
+        <item>Usulután</item>
+    </string-array>
+
+    <string-array name="municipios_ahuachapan">
+        <item>Seleccione un Municipio</item>
+        <item>Ahuachapán Centro</item>
+        <item>Ahuachapán Norte</item>
+        <item>Ahuachapán Sur</item>
+    </string-array>
+
+    <string-array name="municipios_cabanas">
+        <item>Seleccione un Municipio</item>
+        <item>Cabañas Este</item>
+        <item>Cabañas Oeste</item>
+    </string-array>
+
+    <string-array name="municipios_chalatenango">
+        <item>Seleccione un Municipio</item>
+        <item>Chalatenango Centro</item>
+        <item>Chalatenango Norte</item>
+        <item>Chalatenango Sur</item>
+    </string-array>
+
+    <string-array name="municipios_cuscatlan">
+        <item>Seleccione un Municipio</item>
+        <item>Cuscatlán Norte</item>
+        <item>Cuscatlán Sur</item>
+    </string-array>
+
+    <string-array name="municipios_la_libertad">
+        <item>Seleccione un Municipio</item>
+        <item>La Libertad Centro</item>
+        <item>La Libertad Costa</item>
+        <item>La Libertad Este</item>
+        <item>La Libertad Norte</item>
+        <item>La Libertad Oeste</item>
+        <item>La Libertad Sur</item>
+    </string-array>
+
+    <string-array name="municipios_la_paz">
+        <item>Seleccione un Municipio</item>
+        <item>La Paz Centro</item>
+        <item>La Paz Este</item>
+        <item>La Paz Oeste</item>
+    </string-array>
+
+    <string-array name="municipios_la_union">
+        <item>Seleccione un Municipio</item>
+        <item>La Unión Norte</item>
+        <item>La Unión Sur</item>
+    </string-array>
+
+    <string-array name="municipios_morazan">
+        <item>Seleccione un Municipio</item>
+        <item>Morazán Norte</item>
+        <item>Morazán Sur</item>
+    </string-array>
+
+    <string-array name="municipios_san_miguel">
+        <item>Seleccione un Municipio</item>
+        <item>San Miguel Centro</item>
+        <item>San Miguel Este</item>
+        <item>San Miguel Oeste</item>
+    </string-array>
+
+    <string-array name="municipios_san_salvador">
+        <item>Seleccione un Municipio</item>
+        <item>San Salvador Centro</item>
+        <item>San Salvador Este</item>
+        <item>San Salvador Norte</item>
+        <item>San Salvador Oeste</item>
+        <item>San Salvador Sur</item>
+    </string-array>
+
+    <string-array name="municipios_san_vicente">
+        <item>Seleccione un Municipio</item>
+        <item>San Vicente Norte</item>
+        <item>San Vicente Sur</item>
+    </string-array>
+
+    <string-array name="municipios_santa_ana">
+        <item>Seleccione un Municipio</item>
+        <item>Santa Ana Centro</item>
+        <item>Santa Ana Este</item>
+        <item>Santa Ana Norte</item>
+        <item>Santa Ana Oeste</item>
+    </string-array>
+
+    <string-array name="municipios_sonsonate">
+        <item>Seleccione un Municipio</item>
+        <item>Sonsonate Centro</item>
+        <item>Sonsonate Este</item>
+        <item>Sonsonate Oeste</item>
+        <item>Sonsonate Norte</item>
+    </string-array>
+
+    <string-array name="municipios_usulutan">
+        <item>Seleccione un Municipio</item>
+        <item>Usulután Este</item>
+        <item>Usulután Oeste</item>
+        <item>Usulután Norte</item>
+    </string-array>
+
+    <!-- Departamento de Ahuachapán -->
+    <string-array name="districts_ahuachapan_norte">
+        <item>Seleccione un Distrito</item>
+        <item>Atiquizaya</item>
+        <item>El Refugio</item>
+        <item>San Lorenzo</item>
+        <item>Turín</item>
+    </string-array>
+    <string-array name="districts_ahuachapan_centro">
+        <item>Seleccione un Distrito</item>
+        <item>Ahuachapán</item>
+        <item>Apaneca</item>
+        <item>Concepción de Ataco</item>
+        <item>Tacuba</item>
+    </string-array>
+    <string-array name="districts_ahuachapan_sur">
+        <item>Seleccione un Distrito</item>
+        <item>Guaymango</item>
+        <item>Jujutla</item>
+        <item>San Francisco Menéndez</item>
+        <item>San Pedro Puxtla</item>
+    </string-array>
+
+    <!-- Departamento de Cabañas -->
+    <string-array name="districts_cabanas_este">
+        <item>Seleccione un Distrito</item>
+        <item>Sensuntepeque</item>
+        <item>Victoria</item>
+        <item>Villa Dolores</item>
+        <item>Guacotecti</item>
+        <item>San Isidro</item>
+    </string-array>
+    <string-array name="districts_cabanas_oeste">
+        <item>Seleccione un Distrito</item>
+        <item>Ilobasco</item>
+        <item>Tejutepeque</item>
+        <item>Jutiapa</item>
+        <item>Cinquera</item>
+    </string-array>
+
+    <!-- Departamento de Chalatenango -->
+    <string-array name="districts_chalatenango_norte">
+        <item>Seleccione un Distrito</item>
+        <item>La Palma</item>
+        <item>Citalá</item>
+        <item>San Ignacio</item>
+    </string-array>
+    <string-array name="districts_chalatenango_centro">
+        <item>Seleccione un Distrito</item>
+        <item>Nueva Concepción</item>
+        <item>Tejutla</item>
+        <item>La Reina</item>
+        <item>Agua Caliente</item>
+        <item>Dulce Nombre de María</item>
+        <item>El Paraíso</item>
+        <item>San Fernando</item>
+        <item>San Francisco Morazán</item>
+        <item>San Rafael</item>
+        <item>Santa Rita</item>
+    </string-array>
+    <string-array name="districts_chalatenango_sur">
+        <item>Seleccione un Distrito</item>
+        <item>Chalatenango</item>
+        <item>Arcatao</item>
+        <item>Azacualpa</item>
+        <item>Comalapa</item>
+        <item>Concepción Quezaltepeque</item>
+        <item>El Carrizal</item>
+        <item>La Laguna</item>
+        <item>Las Vueltas</item>
+        <item>Nombre de Jesús</item>
+        <item>Nueva Trinidad</item>
+        <item>Ojos de Agua</item>
+        <item>Potonico</item>
+        <item>San Antonio de la Cruz</item>
+        <item>San Antonio Los Ranchos</item>
+        <item>San Francisco Lempa</item>
+        <item>San Isidro Labrador</item>
+        <item>San José Cancasque</item>
+        <item>San Miguel de Mercedes</item>
+        <item>San José Las Flores</item>
+        <item>San Luis del Carmen</item>
+    </string-array>
+
+    <!-- Departamento de Cuscatlán -->
+    <string-array name="districts_cuscatlan_norte">
+        <item>Seleccione un Distrito</item>
+        <item>Suchitoto</item>
+        <item>San José Guayabal</item>
+        <item>Oratorio de Concepción</item>
+        <item>San Bartolomé Perulapía</item>
+        <item>San Pedro Perulapán</item>
+    </string-array>
+    <string-array name="districts_cuscatlan_sur">
+        <item>Seleccione un Distrito</item>
+        <item>Cojutepeque</item>
+        <item>San Rafael Cedros</item>
+        <item>Candelaria</item>
+        <item>Monte San Juan</item>
+        <item>El Carmen</item>
+        <item>San Cristóbal</item>
+        <item>Santa Cruz Michapa</item>
+        <item>San Ramón</item>
+        <item>El Rosario</item>
+        <item>Santa Cruz Analquito</item>
+        <item>Tenancingo</item>
+    </string-array>
+
+    <!-- Departamento de La Libertad -->
+    <string-array name="districts_la_libertad_norte">
+        <item>Seleccione un Distrito</item>
+        <item>Quezaltepeque</item>
+        <item>San Matías</item>
+        <item>San Pablo Tacachico</item>
+    </string-array>
+    <string-array name="districts_la_libertad_centro">
+        <item>Seleccione un Distrito</item>
+        <item>San Juan Opico</item>
+        <item>Ciudad Arce</item>
+    </string-array>
+    <string-array name="districts_la_libertad_oeste">
+        <item>Seleccione un Distrito</item>
+        <item>Colón</item>
+        <item>Jayaque</item>
+        <item>Sacacoyo</item>
+        <item>Tepecoyo</item>
+        <item>Talnique</item>
+    </string-array>
+    <string-array name="districts_la_libertad_este">
+        <item>Seleccione un Distrito</item>
+        <item>Antiguo Cuscatlán</item>
+        <item>Huizúcar</item>
+        <item>Nuevo Cuscatlán</item>
+        <item>San José Villanueva</item>
+        <item>Zaragoza</item>
+    </string-array>
+    <string-array name="districts_la_libertad_costa">
+        <item>Seleccione un Distrito</item>
+        <item>Chiltiupán</item>
+        <item>Jicalapa</item>
+        <item>La Libertad</item>
+        <item>Tamanique</item>
+        <item>Teotepeque</item>
+    </string-array>
+    <string-array name="districts_la_libertad_sur">
+        <item>Seleccione un Distrito</item>
+        <item>Comasagua</item>
+        <item>Santa Tecla</item>
+    </string-array>
+
+    <!-- Departamento de La Paz -->
+    <string-array name="districts_la_paz_centro">
+        <item>Seleccione un Distrito</item>
+        <item>Zacatecoluca</item>
+        <item>Cuyultitán</item>
+        <item>El Rosario</item>
+        <item>Jerusalén</item>
+        <item>Mercedes La Ceiba</item>
+        <item>Olocuilta</item>
+        <item>Paraíso de Osorio</item>
+        <item>San Antonio Masahuat</item>
+        <item>San Emigdio</item>
+        <item>San Francisco Chinameca</item>
+        <item>San Juan Nonualco</item>
+        <item>San Juan Talpa</item>
+    </string-array>
+    <string-array name="districts_la_paz_este">
+        <item>Seleccione un Distrito</item>
+        <item>San Luis Talpa</item>
+        <item>San Miguel Tepezontes</item>
+        <item>San Pedro Masahuat</item>
+        <item>San Pedro Nonualco</item>
+        <item>Santa María Ostuma</item>
+        <item>Santiago Nonualco</item>
+    </string-array>
+    <string-array name="districts_la_paz_oeste">
+        <item>Seleccione un Distrito</item>
+        <item>San Luis La Herradura</item>
+        <item>Santa Cruz Analquito</item>
+        <item>San Rafael Obrajuelo</item>
+    </string-array>
+
+    <!-- Departamento de La Unión -->
+    <string-array name="districts_la_union_norte">
+        <item>Seleccione un Distrito</item>
+        <item>Anamorós</item>
+        <item>Bolívar</item>
+        <item>Concepción de Oriente</item>
+        <item>El Sauce</item>
+        <item>Lislique</item>
+        <item>Nueva Esparta</item>
+        <item>Pasaquina</item>
+        <item>Polorós</item>
+        <item>San José</item>
+        <item>Santa Rosa de Lima</item>
+    </string-array>
+    <string-array name="districts_la_union_sur">
+        <item>Seleccione un Distrito</item>
+        <item>La Unión</item>
+        <item>Conchagua</item>
+        <item>El Carmen</item>
+        <item>Intipucá</item>
+        <item>Meanguera del Golfo</item>
+        <item>San Alejo</item>
+        <item>Yayantique</item>
+        <item>Yucuaiquín</item>
+    </string-array>
+
+    <!-- Departamento de Morazán -->
+    <string-array name="districts_morazan_norte">
+        <item>Seleccione un Distrito</item>
+        <item>Arambala</item>
+        <item>Cacaopera</item>
+        <item>Corinto</item>
+        <item>El Rosario</item>
+        <item>Joateca</item>
+        <item>Jocoaitique</item>
+        <item>Meanguera</item>
+        <item>Perquín</item>
+        <item>San Fernando</item>
+        <item>San Isidro</item>
+        <item>Torola</item>
+    </string-array>
+    <string-array name="districts_morazan_sur">
+        <item>Seleccione un Distrito</item>
+        <item>Chilanga</item>
+        <item>Delicias de Concepción</item>
+        <item>El Divisadero</item>
+        <item>Gualococti</item>
+        <item>Guatajiagua</item>
+        <item>Jocoro</item>
+        <item>Lolotiquillo</item>
+        <item>Osicala</item>
+        <item>San Carlos</item>
+        <item>San Francisco Gotera</item>
+        <item>San Simón</item>
+        <item>Sensembra</item>
+        <item>Sociedad</item>
+        <item>Yamabal</item>
+        <item>Yoloaiquín</item>
+    </string-array>
+
+    <!-- Departamento de San Miguel -->
+    <string-array name="districts_san_miguel_norte">
+        <item>Seleccione un Distrito</item>
+        <item>Ciudad Barrios</item>
+        <item>Sesori</item>
+        <item>Nuevo Edén de San Juan</item>
+        <item>San Gerardo</item>
+        <item>San Luis de la Reina</item>
+        <item>Carolina</item>
+        <item>San Antonio del Mosco</item>
+        <item>Chapeltique</item>
+    </string-array>
+    <string-array name="districts_san_miguel_centro">
+        <item>Seleccione un Distrito</item>
+        <item>San Miguel</item>
+        <item>Comacarán</item>
+        <item>Uluazapa</item>
+        <item>Moncagua</item>
+        <item>Quelepa</item>
+        <item>Chirilagua</item>
+    </string-array>
+    <string-array name="districts_san_miguel_oeste">
+        <item>Seleccione un Distrito</item>
+        <item>Chinameca</item>
+        <item>Nueva Guadalupe</item>
+        <item>Lolotique</item>
+        <item>San Jorge</item>
+        <item>San Rafael Oriente</item>
+        <item>El Tránsito</item>
+    </string-array>
+
+    <!-- Departamento de San Salvador -->
+    <string-array name="districts_san_salvador_norte">
+        <item>Seleccione un Distrito</item>
+        <item>Aguilares</item>
+        <item>El Paisnal</item>
+        <item>Guazapa</item>
+    </string-array>
+    <string-array name="districts_san_salvador_oeste">
+        <item>Seleccione un Distrito</item>
+        <item>Apopa</item>
+        <item>Nejapa</item>
+    </string-array>
+    <string-array name="districts_san_salvador_este">
+        <item>Seleccione un Distrito</item>
+        <item>Cuscatancingo</item>
+        <item>Ciudad Delgado</item>
+        <item>Ilopango</item>
+        <item>San Martín</item>
+        <item>Soyapango</item>
+        <item>Tonacatepeque</item>
+    </string-array>
+    <string-array name="districts_san_salvador_centro">
+        <item>Seleccione un Distrito</item>
+        <item>Ayutuxtepeque</item>
+        <item>Mejicanos</item>
+        <item>San Salvador</item>
+        <item>Cuscatancingo</item>
+        <item>Ciudad Delgado</item>
+    </string-array>
+    <string-array name="districts_san_salvador_sur">
+        <item>Seleccione un Distrito</item>
+        <item>Panchimalco</item>
+        <item>Rosario de Mora</item>
+        <item>San Marcos</item>
+        <item>Santo Tomás</item>
+        <item>Santiago Texacuangos</item>
+    </string-array>
+
+    <!-- Departamento de San Vicente -->
+    <string-array name="districts_san_vicente_norte">
+        <item>Seleccione un Distrito</item>
+        <item>San Cayetano Istepeque</item>
+        <item>San Esteban Catarina</item>
+        <item>San Ildefonso</item>
+        <item>San Lorenzo</item>
+        <item>San Vicente</item>
+        <item>Santa Clara</item>
+        <item>Santo Domingo</item>
+    </string-array>
+    <string-array name="districts_san_vicente_sur">
+        <item>Seleccione un Distrito</item>
+        <item>Apastepeque</item>
+        <item>Guadalupe</item>
+        <item>San Sebastián</item>
+        <item>Tecoluca</item>
+        <item>Tepetitán</item>
+        <item>Verapaz</item>
+    </string-array>
+
+    <!-- Departamento de Santa Ana -->
+    <string-array name="districts_santa_ana_centro">
+        <item>Seleccione un Distrito</item>
+        <item>Santa Ana</item>
+    </string-array>
+    <string-array name="districts_santa_ana_norte">
+        <item>Seleccione un Distrito</item>
+        <item>Masahuat</item>
+        <item>Metapán</item>
+        <item>Santa Rosa Guachipilín</item>
+        <item>Texistepeque</item>
+    </string-array>
+    <string-array name="districts_santa_ana_este">
+        <item>Seleccione un Distrito</item>
+        <item>Chalchuapa</item>
+        <item>El Porvenir</item>
+        <item>San Antonio Pajonal</item>
+        <item>San Sebastián Salitrillo</item>
+        <item>Santiago de la Frontera</item>
+    </string-array>
+    <string-array name="districts_santa_ana_oeste">
+        <item>Seleccione un Distrito</item>
+        <item>Candelaria de la Frontera</item>
+        <item>Coatepeque</item>
+        <item>El Congo</item>
+    </string-array>
+
+    <!-- Departamento de Sonsonate -->
+    <string-array name="districts_sonsonete_centro">
+        <item>Seleccione un Distrito</item>
+        <item>Sonsonate</item>
+        <item>Sonzacate</item>
+        <item>San Antonio del Monte</item>
+        <item>Santo Domingo de Guzmán</item>
+    </string-array>
+    <string-array name="districts_sonsonete_este">
+        <item>Seleccione un Distrito</item>
+        <item>Izalco</item>
+        <item>Armenia</item>
+        <item>Caluco</item>
+        <item>San Julián</item>
+    </string-array>
+    <string-array name="districts_sonsonete_oeste">
+        <item>Seleccione un Distrito</item>
+        <item>Acajutla</item>
+    </string-array>
+    <string-array name="districts_sonsonete_norte">
+        <item>Seleccione un Distrito</item>
+        <item>Juayúa</item>
+        <item>Nahuizalco</item>
+        <item>Salcoatitán</item>
+        <item>Santa Catarina Masahuat</item>
+    </string-array>
+
+    <!-- Departamento de Usulután -->
+    <string-array name="districts_usulutan_norte">
+        <item>Seleccione un Distrito</item>
+        <item>Berlín</item>
+        <item>Alegría</item>
+        <item>El Triunfo</item>
+        <item>Estanzuelas</item>
+        <item>Jiquilisco</item>
+        <item>Puerto El Triunfo</item>
+        <item>San Agustín</item>
+        <item>Santiago de María</item>
+    </string-array>
+    <string-array name="districts_usulutan_centro">
+        <item>Seleccione un Distrito</item>
+        <item>Usulután</item>
+        <item>Concepción Batres</item>
+        <item>Ereguayquín</item>
+        <item>Jucuarán</item>
+        <item>San Dionisio</item>
+        <item>Santa Elena</item>
+    </string-array>
+    <string-array name="districts_usulutan_este">
+        <item>Seleccione un Distrito</item>
+        <item>Jucuapa</item>
+        <item>Nueva Granada</item>
+        <item>Ozatlán</item>
+        <item>San Buenaventura</item>
+        <item>Santa María</item>
+        <item>Tecapán</item>
+    </string-array>
+
+</resources>

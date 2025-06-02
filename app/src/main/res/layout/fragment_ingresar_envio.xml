@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    tools:context=".negocio.IngresarEnvio">
+
+    <!-- ScrollView para el contenido variable -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.90"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:padding="40dp">
+
+            <!-- Título fijo: 10% -->
+            <TextView
+                android:id="@+id/titulo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Ingresa tu envio"
+                android:textColor="@color/black"
+                android:textSize="32sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <EditText
+                android:id="@+id/txtNombreCliente"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/borde_edittext"
+                android:hint="Nombre del cliente"
+                android:inputType="text"
+                android:textColor="@color/black"
+                android:textColorHint="@color/textHint"
+                android:layout_marginEnd="12dp"
+                android:textSize="16sp"
+                app:layout_constraintTop_toBottomOf="@+id/titulo"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/txtApellidoCliente"/>
+
+            <EditText
+                android:id="@+id/txtApellidoCliente"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/borde_edittext"
+                android:hint="Número de contacto"
+                android:inputType="phone"
+                android:textColor="@color/black"
+                android:textColorHint="@color/textHint"
+                android:padding="12dp"
+                android:textSize="16sp"
+                app:layout_constraintTop_toBottomOf="@+id/titulo"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/txtNombreCliente"/>
+
+            <EditText
+                android:id="@+id/txtDireccionCliente"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/borde_edittext"
+                android:hint="Correo electrónico"
+                android:inputType="textEmailAddress"
+                android:textColor="@color/black"
+                android:textColorHint="@color/textHint"
+                android:padding="12dp"
+                android:textSize="16sp"
+                app:layout_constraintTop_toBottomOf="@id/txtNombreCliente"/>
+
+            <Spinner
+                android:id="@+id/spinnerDepartamento"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/borde_edittext"
+                android:textColor="@color/black"
+                android:textColorHint="@color/textHint"
+                android:padding="12dp"
+                app:layout_constraintTop_toBottomOf="@id/txtDireccionCliente"/>
+
+            <Spinner
+                android:id="@+id/spinnerMunicipio"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/borde_edittext"
+                android:textColor="@color/black"
+                android:textColorHint="@color/textHint"
+                android:padding="12dp"
+                app:layout_constraintTop_toBottomOf="@id/spinnerDepartamento"/>
+
+            <Spinner
+                android:id="@+id/spinnerDistrito"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/borde_edittext"
+                android:textColor="@color/black"
+                android:textColorHint="@color/textHint"
+                android:padding="12dp"
+                app:layout_constraintTop_toBottomOf="@id/spinnerMunicipio"/>
+
+            <EditText
+                android:id="@+id/txtNumCelularCliente"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="12dp"
+                android:background="@drawable/borde_edittext"
+                android:hint="Nombre del cliente"
+                android:inputType="text"
+                android:textColor="@color/black"
+                android:textColorHint="@color/textHint"
+                android:padding="12dp"
+                android:textSize="16sp"
+                app:layout_constraintTop_toBottomOf="@id/spinnerDistrito"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/txtPesoPaquete"/>
+
+            <EditText
+                android:id="@+id/txtPesoPaquete"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/borde_edittext"
+                android:hint="Número de contacto"
+                android:inputType="phone"
+                android:textColor="@color/black"
+                android:textColorHint="@color/textHint"
+                android:padding="12dp"
+                android:textSize="16sp"
+                app:layout_constraintTop_toBottomOf="@id/spinnerDistrito"
+                app:layout_constraintStart_toEndOf="@+id/txtNumCelularCliente"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <EditText
+                android:id="@+id/txtTamanoPaquete"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/borde_edittext"
+                android:hint="Tamaño paquete en cm"
+                android:inputType="numberDecimal"
+                android:textColor="@color/black"
+                android:textColorHint="@color/textHint"
+                android:padding="12dp"
+                android:textSize="16sp"
+                app:layout_constraintTop_toBottomOf="@id/txtNumCelularCliente"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <EditText
+                android:id="@+id/txtProductoDes"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/borde_edittext"
+                android:hint="Producto que envia"
+                android:inputType="text"
+                android:textColor="@color/black"
+                android:textColorHint="@color/textHint"
+                android:padding="12dp"
+                android:textSize="16sp"
+                app:layout_constraintTop_toBottomOf="@id/txtTamanoPaquete"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <!-- Botones -->
+            <Button
+                android:id="@+id/btnEnviar"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="40dp"
+                app:backgroundTint="@null"
+                android:background="@drawable/fondo_boton"
+                android:backgroundTint="#4296B3"
+                android:text="Enviar paquete"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:layout_constraintTop_toBottomOf="@id/txtProductoDes"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</LinearLayout>

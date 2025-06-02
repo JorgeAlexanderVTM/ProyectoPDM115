@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_negocio_graph"
+    app:startDestination="@id/homeNegocio">
+
+    <fragment
+        android:id="@+id/homeNegocio"
+        android:name="ues.pdm115.proyectopdm115grupo3.negocio.HomeNegocio"
+        android:label="Inicio"
+        app:menu="@menu/toolbar_menu">
+
+        <action android:id="@+id/action_homeNegocio_to_ingresarEnvio"
+            app:destination="@+id/ingresarEnvio"/>
+
+        <action android:id="@+id/action_homeNegocio_to_rastrearEnvio"
+            app:destination="@+id/rastrearEnvio"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/ingresarEnvio"
+        android:name="ues.pdm115.proyectopdm115grupo3.negocio.IngresarEnvio"
+        android:label="Enviar envio"
+        app:menu="@menu/toolbar_menu">
+    </fragment>
+
+    <fragment
+        android:id="@+id/rastrearEnvio"
+        android:name="ues.pdm115.proyectopdm115grupo3.negocio.RastrearEnvio"
+        android:label="Rastrear envios"
+        app:menu="@menu/toolbar_menu">
+
+        <action
+            android:id="@+id/action_rastrearEnvio_to_rastrearEnvioMap"
+            app:destination="@id/rastrearEnvioMap"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/rastrearEnvioMap"
+        android:name="ues.pdm115.proyectopdm115grupo3.negocio.RastrearEnvioMap"
+        android:label="Rastrear envios"
+        app:menu="@menu/toolbar_menu">
+
+
+        <argument
+            android:name="codigoEnvio"
+            app:argType="string" />
+        <argument
+            android:name="nombreComprador"
+            app:argType="string" />
+        <argument
+            android:name="nombreRepartidor"
+            app:argType="string" />
+
+    </fragment>
+
+
+
+</navigation>

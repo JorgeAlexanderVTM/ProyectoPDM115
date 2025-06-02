@@ -1,4 +1,4 @@
-package ues.pdm115.proyectopdm115grupo3.repartidor
+package ues.pdm115.proyectopdm115grupo3.comprador
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -23,26 +23,42 @@ import kotlinx.coroutines.launch
 import ues.pdm115.proyectopdm115grupo3.DataStoreManager
 import ues.pdm115.proyectopdm115grupo3.MainActivity
 import ues.pdm115.proyectopdm115grupo3.R
-import ues.pdm115.proyectopdm115grupo3.databinding.FragmentMapaRutaActivaBinding
-import ues.pdm115.proyectopdm115grupo3.negocio.Repartidor
+import ues.pdm115.proyectopdm115grupo3.databinding.FragmentLocatePackageUserMapBinding
 
-class MapaRutaActiva : Fragment(), OnMapReadyCallback {
+class LocatePackageUserMap : Fragment(), OnMapReadyCallback{
 
-    private var _binding: FragmentMapaRutaActivaBinding? = null
+    private var _binding: FragmentLocatePackageUserMapBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var googleMap: GoogleMap // Variable para almacenar la instancia del mapa
+    private lateinit var googleMap: GoogleMap
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentMapaRutaActivaBinding.inflate(inflater, container, false)
+        _binding = FragmentLocatePackageUserMapBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        val args = LocatePackageUserMapArgs.fromBundle(requireArguments())
+
+        binding.tvIdCodigo.text = "Código entrega: ${args.idCodigo}"
+        binding.tvFechaEntrega.text = args.fechaEntrega
+        binding.tvObservaciones.text = args.observaciones
+
+        binding.btnConfirmarPedido.setOnClickListener {
+            binding.flConfirmar.visibility = View.VISIBLE
+            binding.contentDescription.visibility = View.GONE
+            binding.btnConfirmarPedido.visibility = View.GONE
+        }
+
+        binding.btnOcultarCodigo.setOnClickListener {
+            binding.flConfirmar.visibility = View.GONE
+            binding.contentDescription.visibility = View.VISIBLE
+            binding.btnConfirmarPedido.visibility = View.VISIBLE
+        }
 
         inicializarToolbar()
         inicializarMapaGoogle()

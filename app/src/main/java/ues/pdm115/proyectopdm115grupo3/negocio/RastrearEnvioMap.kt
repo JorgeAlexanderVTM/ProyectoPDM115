@@ -1,4 +1,4 @@
-package ues.pdm115.proyectopdm115grupo3.repartidor
+package ues.pdm115.proyectopdm115grupo3.negocio
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,10 +8,14 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -19,33 +23,86 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ues.pdm115.proyectopdm115grupo3.DataStoreManager
 import ues.pdm115.proyectopdm115grupo3.MainActivity
 import ues.pdm115.proyectopdm115grupo3.R
-import ues.pdm115.proyectopdm115grupo3.databinding.FragmentMapaRutaActivaBinding
-import ues.pdm115.proyectopdm115grupo3.negocio.Repartidor
+import ues.pdm115.proyectopdm115grupo3.comprador.Pedidos
+import ues.pdm115.proyectopdm115grupo3.comprador.PedidosAdapter
+import ues.pdm115.proyectopdm115grupo3.databinding.FragmentRastrearEnvioMapBinding
 
-class MapaRutaActiva : Fragment(), OnMapReadyCallback {
+class RastrearEnvioMap : Fragment(), OnRepartidorClickListener, OnMapReadyCallback  {
 
-    private var _binding: FragmentMapaRutaActivaBinding? = null
+    private var _binding: FragmentRastrearEnvioMapBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var repartidoreData: List<Repartidor>
     private lateinit var googleMap: GoogleMap // Variable para almacenar la instancia del mapa
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentMapaRutaActivaBinding.inflate(inflater, container, false)
+        _binding = FragmentRastrearEnvioMapBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        // Muestra el ProgressBar justo antes de iniciar la carga del mapa
+        binding.progressBarMap.visibility = View.VISIBLE
 
-        inicializarToolbar()
+        binding.btnAsignarRepartidor.setOnClickListener {
+            if(binding.btnAsignarRepartidor.text == "Asignar repartidor"){
+                binding.flCodigoPaquete.visibility = View.GONE
+                binding.mapContainer.visibility = View.GONE
+                binding.asignarRepartidorVista.visibility = View.VISIBLE
+                binding.btnAsignarRepartidor.text = "Cancelar"
+            }else{
+                binding.mapContainer.visibility = View.VISIBLE
+                binding.asignarRepartidorVista.visibility = View.GONE
+                binding.btnAsignarRepartidor.text = "Asignar repartidor"
+            }
+
+        }
+
+        binding.btnCompartirCodigo.setOnClickListener {
+            binding.flCodigoPaquete.visibility = View.VISIBLE
+        }
+
+        binding.btnOcultarCodigo.setOnClickListener {
+            binding.flCodigoPaquete.visibility = View.GONE
+        }
+
+        binding.btnCopiarCodigo.setOnClickListener {
+            Toast.makeText(context,"Código copiado", Toast.LENGTH_SHORT).show()
+        }
+
+        binding.repartidoreRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+        repartidoreData = listOf(
+            Repartidor("1", "Carlos Gabriel Mendoza", "Disponible", null),
+            Repartidor("2", "Ana Sofía Ramírez", "Disponible", null),
+            Repartidor("3", "José Luis Pérez", "Disponible", null),
+            Repartidor("4", "María Fernanda López", "Disponible", null),
+            Repartidor("5", "Juan Carlos Vásquez", "Disponible", null),
+            Repartidor("6", "Karla Patricia Gómez", "Disponible", null),
+            Repartidor("7", "Luis Fernando Ortiz", "Disponible", null),
+            Repartidor("8", "Claudia Beatriz Sánchez", "Disponible", null),
+            Repartidor("9", "Ricardo Antonio Cruz", "Disponible", null),
+            Repartidor("10", "Laura Isabel Torres", "Disponible", null),
+            Repartidor("11", "Manuel Esteban Rivera", "Disponible", null)
+        )
+        val adapter = RepartidorAdapter(repartidoreData, this)
+        binding.repartidoreRecyclerView.adapter = adapter
+        binding.txtCodigoPaquete.text = "1223-22333" //Codigo recibido por API REST
+
         inicializarMapaGoogle()
+        inicializarToolbar()
+
+
     }
 
     private fun inicializarToolbar(){
@@ -85,6 +142,15 @@ class MapaRutaActiva : Fragment(), OnMapReadyCallback {
             mapFragment.getMapAsync(this) // Si ya existe, simplemente obtén el mapa
         }
 
+    }
+
+    override fun onAsignarClick(position: Int) {
+        val repartidor = repartidoreData[position]
+        Toast.makeText(requireContext(), "Asignaste a ${repartidor.nombreRepartidor}", Toast.LENGTH_SHORT).show()
+
+        binding.mapContainer.visibility = View.VISIBLE
+        binding.asignarRepartidorVista.visibility = View.GONE
+        binding.btnAsignarRepartidor.visibility = View.GONE
     }
 
     override fun onMapReady(p0: GoogleMap) {

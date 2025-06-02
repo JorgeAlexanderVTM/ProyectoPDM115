@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import kotlinx.coroutines.delay
 import ues.pdm115.proyectopdm115grupo3.databinding.FragmentLoginUserBinding
 import kotlinx.coroutines.launch
 import ues.pdm115.proyectopdm115grupo3.DataStoreManager
@@ -18,10 +19,6 @@ class LoginUser : Fragment() {
 
     private var _binding: FragmentLoginUserBinding? = null
     private val binding get() = _binding!!
-
-    companion object {
-        fun newInstance() = LoginUser()
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -42,8 +39,19 @@ class LoginUser : Fragment() {
                 return@setOnClickListener
             }
 
-            val userType = if (username.startsWith("c")) "comprador" else "repartidor" // Lógica simple
-            if ((username == "cadmin" && password == "1234") || (username == "radmin" && password == "1234")) {
+            val userType: String
+            if(username.startsWith("c")){
+                userType = "comprador"
+            }else if(username.startsWith("r")){
+                userType = "repartidor"
+            }else{
+                userType = "negocio"
+            }
+
+            if (
+                (username == "cadmin" && password == "1234") ||
+                (username == "radmin" && password == "1234") ||
+                (username == "nadmin" && password == "1234")) {
                 lifecycleScope.launch {
                     try {
                         DataStoreManager.saveUsername(requireContext(), username, userType)

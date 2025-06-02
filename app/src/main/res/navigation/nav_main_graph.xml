@@ -7,8 +7,30 @@
     <fragment
         android:id="@+id/locatePackageUserFragment"
         android:name="ues.pdm115.proyectopdm115grupo3.comprador.LocatePackageUser"
-        android:label="Home"
-        app:menu="@menu/toolbar_menu"/>
+        android:label="Inicio"
+        app:menu="@menu/toolbar_menu">
+            <action
+                android:id="@+id/action_locatePackageUserFragment_to_locatePackageUserFragmentMap"
+                app:destination="@id/locatePackageUserFragmentMap"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/locatePackageUserFragmentMap"
+        android:name="ues.pdm115.proyectopdm115grupo3.comprador.LocatePackageUserMap"
+        android:label="Pedido"
+        app:menu="@menu/toolbar_menu">
+
+        <argument
+            android:name="idCodigo"
+            app:argType="string" />
+        <argument
+            android:name="fechaEntrega"
+            app:argType="string" />
+        <argument
+            android:name="observaciones"
+            app:argType="string" />
+
+    </fragment>
 
 </navigation>
 
