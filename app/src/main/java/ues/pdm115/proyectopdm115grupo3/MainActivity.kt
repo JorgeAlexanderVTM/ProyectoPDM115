@@ -1,23 +1,26 @@
 package ues.pdm115.proyectopdm115grupo3
 
+import android.content.Context
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.widget.LinearLayout
-import android.widget.ProgressBar
-import android.widget.TextView
+import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
-import com.google.android.material.imageview.ShapeableImageView
 import kotlinx.coroutines.launch
 import ues.pdm115.proyectopdm115grupo3.databinding.ActivityMainBinding
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -35,34 +38,47 @@ class MainActivity : AppCompatActivity() {
         // Configura el Toolbar
         setSupportActionBar(binding.toolbar)
 
-        // Configura los elementos del usuario
-
-
         // Configura el NavHostFragment
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
 
         // Configura AppBarConfiguration para evitar la flecha de retroceso en home
-        appBarConfiguration = AppBarConfiguration(setOf(R.id.locatePackageUserFragment, R.id.homeRepartidor))
+        appBarConfiguration = AppBarConfiguration(setOf(R.id.locatePackageUserFragment, R.id.homeRepartidor, R.id.loginUserFragment))
         setupActionBarWithNavController(navController, appBarConfiguration)
+        temaToolbar()
 
-        // Verifica el estado de login y configura el grafo inicial de forma asíncrona
-        if (savedInstanceState == null) {
-            lifecycleScope.launch {
-                val username = DataStoreManager.getUsername(this@MainActivity)
-                if (username != null) {
-                    val userType = DataStoreManager.getUserType(this@MainActivity)
-                    navigateToMainGraphWithUserInfo(username, userType ?: "comprador") // Valor por defecto
-                } else {
-                    navController.setGraph(R.navigation.nav_login_graph)
-                }
-                // Oculta el indicador de carga después de determinar el grafo
-                binding.loadingIndicator.visibility = View.GONE
-                binding.containerProgressBar.visibility = View.GONE
-            }
+        // Comprobación de si el usuario está logueado
+        checkUserLoginState()
+
+
+        // Ajusta los insets para edge-to-edge
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
         }
+    }
 
-        // Escucha cambios en el destino para ocultar/mostrar el Toolbar y los elementos del usuario
+    private fun checkUserLoginState() {
+        lifecycleScope.launch {
+            val username = DataStoreManager.getUsername(this@MainActivity)
+
+            if (username != null) {
+                // Si hay un username guardado, lo consideramos como logueado
+                val userType = DataStoreManager.getUserType(this@MainActivity) ?: "Comprador"
+                navigateToMainGraphWithUserInfo(username, userType)
+            } else {
+                // Si no hay usuario guardado, lo mandamos al grafo de login
+                navController.setGraph(R.navigation.nav_login_graph)
+            }
+
+            // Ocultamos el indicador de carga después de la verificación
+            binding.loadingIndicator.visibility = View.GONE
+            binding.containerProgressBar.visibility = View.GONE
+        }
+    }
+
+    private fun temaToolbar(){
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.loginUserFragment, R.id.registerUserFragment, R.id.registerRepartidorFragment, R.id.registerNegocioFragment, R.id.selectUserType -> {
@@ -74,35 +90,15 @@ class MainActivity : AppCompatActivity() {
                     binding.userInfoContainer.visibility = View.VISIBLE
                     binding.toolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.toolbar_repartidor)) // Color negro para repartidor
                     binding.userInfoContainer.setBackgroundColor(ContextCompat.getColor(this, R.color.toolbar_repartidor))
-                    lifecycleScope.launch {
-                        val currentUsername = DataStoreManager.getUsername(this@MainActivity)
-                        if (currentUsername != null) {
-                            binding.userNameText.text = currentUsername
-                            binding.userProfileImage.setImageResource(R.drawable.__default)
-                        }
-                    }
                 }
                 else -> {
                     binding.toolbar.visibility = View.VISIBLE
                     binding.userInfoContainer.visibility = View.VISIBLE
                     binding.toolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
                     binding.userInfoContainer.setBackgroundColor(ContextCompat.getColor(this, R.color.white))
-                    lifecycleScope.launch {
-                        val currentUsername = DataStoreManager.getUsername(this@MainActivity)
-                        if (currentUsername != null) {
-                            binding.userNameText.text = currentUsername
-                            binding.userProfileImage.setImageResource(R.drawable.__default)
-                        }
-                    }
+
                 }
             }
-        }
-
-        // Ajusta los insets para edge-to-edge
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
         }
     }
 
@@ -115,19 +111,17 @@ class MainActivity : AppCompatActivity() {
             val username = DataStoreManager.getUsername(this@MainActivity)
             if (username != null) {
                 val userType = DataStoreManager.getUserType(this@MainActivity)
-                navigateToMainGraphWithUserInfo(username, userType ?: "comprador")
+                navigateToMainGraphWithUserInfo(username, userType ?: "Comprador")
             }
         }
     }
 
+    // Navegar al grafo principal según el tipo de usuario
     private fun navigateToMainGraphWithUserInfo(username: String, userType: String) {
-        // Carga el grafo correspondiente según el tipo de usuario
-        if(userType == "comprador"){
-            navController.setGraph(R.navigation.nav_main_graph)
-        }else if(userType == "repartidor"){
-            navController.setGraph(R.navigation.nav_repartidor_graph)
-        }else{
-            navController.setGraph(R.navigation.nav_negocio_graph)
+        when (userType) {
+            "Comprador" -> navController.setGraph(R.navigation.nav_main_graph)
+            "Repartidor" -> navController.setGraph(R.navigation.nav_repartidor_graph)
+            "Negocio" -> navController.setGraph(R.navigation.nav_negocio_graph)
         }
         binding.userNameText.text = username
         binding.userProfileImage.setImageResource(R.drawable.__default) // Asegúrate de que el recurso exista
@@ -136,5 +130,12 @@ class MainActivity : AppCompatActivity() {
 
     fun navigateToLoginGraph() {
         navController.setGraph(R.navigation.nav_login_graph)
+    }
+}
+
+fun Fragment.hideKeyboard() {
+    view?.let { v ->
+        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(v.windowToken, 0)
     }
 }

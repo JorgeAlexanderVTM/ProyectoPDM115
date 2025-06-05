@@ -13,6 +13,7 @@
         android:layout_height="?attr/actionBarSize"
         android:background="@color/white"
         app:titleTextColor="@color/black"
+        android:visibility="gone"
         app:subtitleTextColor="@color/black"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -26,6 +27,7 @@
         android:orientation="horizontal"
         android:paddingHorizontal="20dp"
         android:paddingVertical="8dp"
+        android:visibility="gone"
         android:background="@android:color/white"
         android:gravity="left|center"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -74,6 +76,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@color/white"
+        android:visibility="visible"
         app:layout_constraintTop_toBottomOf="@+id/userInfoContainer"
         app:layout_constraintBottom_toBottomOf="parent"
         >

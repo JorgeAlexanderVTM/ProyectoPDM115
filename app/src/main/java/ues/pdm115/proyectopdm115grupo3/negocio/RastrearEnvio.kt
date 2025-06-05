@@ -89,6 +89,7 @@ class RastrearEnvio : Fragment(), EnviosAdapter.OnEnvioClickListener  {
                     R.id.action_logout -> {
                         lifecycleScope.launch(Dispatchers.Main) {
                             DataStoreManager.clearUsername(requireContext())
+                            DataStoreManager.clearUserType(requireContext())
                             (requireActivity() as MainActivity).navigateToLoginGraph()
                         }
                         true

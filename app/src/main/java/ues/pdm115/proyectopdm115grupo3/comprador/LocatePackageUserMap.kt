@@ -77,6 +77,7 @@ class LocatePackageUserMap : Fragment(), OnMapReadyCallback{
                     R.id.action_logout -> {
                         lifecycleScope.launch {
                             DataStoreManager.clearUsername(requireContext())
+                            DataStoreManager.clearUserType(requireContext())
                             (requireActivity() as MainActivity).navigateToLoginGraph()
                         }
                         true

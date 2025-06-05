@@ -13,16 +13,17 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.5"
+        android:layout_weight="0.4"
         android:scaleType="fitCenter"
         android:src="@drawable/__removebg_preview2"
         android:padding="20dp"/>
 
     <!-- Contenedor de los demás componentes: 50% -->
     <LinearLayout
+        android:id="@+id/containerFormulario"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.5"
+        android:layout_weight="0.6"
         android:orientation="vertical"
         android:weightSum="1"
         android:gravity="top|center"
@@ -58,6 +59,7 @@
                 android:hint="Ingrese Usuario"
                 android:inputType="text"
                 android:padding="12dp"
+                android:textSize="18sp"
                 android:textColor="@color/black"
                 android:textColorHint="@color/textHint" />
 
@@ -70,6 +72,7 @@
                 android:hint="Ingrese Contraseña"
                 android:inputType="textPassword"
                 android:padding="12dp"
+                android:textSize="18sp"
                 android:textColor="@color/black"
                 android:textColorHint="@color/textHint" />
         </LinearLayout>
@@ -92,7 +95,7 @@
                 android:background="@drawable/fondo_boton"
                 android:text="Iniciar Sesión"
                 android:textColor="@color/white"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:layout_marginBottom="15dp"/>
 
             <Button
@@ -104,9 +107,58 @@
                 android:background="@drawable/fondo_boton"
                 android:text="Registrarse"
                 android:textColor="@color/white"
-                android:textSize="20sp"/>
-
-
+                android:textSize="18sp"/>
         </LinearLayout>
+
+
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/containerProgressBar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:layout_marginBottom="20dp"
+            android:text="Cargando por favor espere..."
+            android:textColor="@color/black"
+            android:textStyle="bold" />
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:visibility="visible"
+            android:indeterminate="true" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/containerMessage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone"
+        >
+
+        <TextView
+            android:id="@+id/txtMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginBottom="20dp"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+
 </LinearLayout>
+

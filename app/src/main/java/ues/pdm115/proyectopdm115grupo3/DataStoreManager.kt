@@ -11,11 +11,16 @@ object DataStoreManager {
     private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_prefs")
 
     val USERNAME_KEY = stringPreferencesKey("username")
-    val USER_TYPE_KEY = stringPreferencesKey("user_type") // Nuevo campo: "comprador" o "repartidor"
+    val USER_TYPE_KEY = stringPreferencesKey("user_type")
 
-    suspend fun saveUsername(context: Context, username: String, userType: String) {
+    suspend fun saveUsername(context: Context, username: String) {
         context.dataStore.edit { preferences ->
             preferences[USERNAME_KEY] = username
+        }
+    }
+
+    suspend fun saveUserType(context: Context, userType: String) {
+        context.dataStore.edit { preferences ->
             preferences[USER_TYPE_KEY] = userType
         }
     }
@@ -33,6 +38,12 @@ object DataStoreManager {
     suspend fun clearUsername(context: Context) {
         context.dataStore.edit { preferences ->
             preferences.remove(USERNAME_KEY)
+        }
+    }
+
+    suspend fun clearUserType(context: Context) {
+        context.dataStore.edit { preferences ->
+            preferences.remove(USER_TYPE_KEY)
         }
     }
 }
