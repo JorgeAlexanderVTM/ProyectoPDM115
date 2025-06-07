@@ -33,8 +33,9 @@ class IngresarEnvioViewModel() : ViewModel() {
         latitud: Double,
         ubicacionTextual: String,
         detalleEnvio: String,
-        nombreCliente: String,
-        numeroTelefonoCliente: Int,
+        nombreRemitente: String,
+        nombreDestinatario: String,
+        numeroTelefonoDestinatario: Int,
         idDepartamento: Int,
         idMunicipio: Int,
         idDistrito: Int,
@@ -50,14 +51,14 @@ class IngresarEnvioViewModel() : ViewModel() {
         viewModelScope.launch {
             delay(500) // Pequeño retraso para que el ProgressBar sea visible
             try {
-                // Llamada al método registerEnvio de la ApiService con todos los campos
                 val response = api.agregarEnvio(
                     longitud,
                     latitud,
                     ubicacionTextual,
                     detalleEnvio,
-                    nombreCliente,
-                    numeroTelefonoCliente,
+                    nombreRemitente,
+                    nombreDestinatario,
+                    numeroTelefonoDestinatario,
                     idDepartamento,
                     idMunicipio,
                     idDistrito,

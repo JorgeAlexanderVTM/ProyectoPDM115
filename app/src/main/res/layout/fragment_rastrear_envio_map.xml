@@ -19,6 +19,7 @@
         app:layout_constraintEnd_toEndOf="parent">
 
         <TextView
+            android:id="@+id/txtTitulo"
             android:text="Título del envio seleccionado"
             android:textSize="20sp"
             android:textColor="#000000"
@@ -52,12 +53,13 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginStart="8dp"
+            android:visibility="gone"
             android:background="@drawable/fondo_boton"
             android:backgroundTint="@color/color_btn_primary"
             android:text="Asignar repartidor"
             android:textColor="@color/white"
             android:textSize="16sp"
-            app:backgroundTint="@null"/>
+            app:backgroundTint="@null" />
     </LinearLayout>
 
     <!-- Contenedor google maps -->
@@ -172,7 +174,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Codigo del paquete"
+                        android:text="Código seguro del paquete"
                         android:textColor="@color/white"
                         android:textSize="18sp" />
                 </LinearLayout>
@@ -234,15 +236,49 @@
         </androidx.cardview.widget.CardView>
     </FrameLayout>
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/containerProgressBar"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="visible"
+        android:background="@color/white"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" >
+        <ProgressBar
+            android:id="@+id/globalProgressBar"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:visibility="visible"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <ProgressBar
-        android:id="@+id/progressBarMap"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+    <LinearLayout
+        android:id="@+id/containerMessage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:gravity="center"
         android:visibility="gone"
-        app:layout_constraintTop_toTopOf="@id/mapContainer"
-        app:layout_constraintBottom_toBottomOf="@id/mapContainer"
-        app:layout_constraintStart_toStartOf="@id/mapContainer"
-        app:layout_constraintEnd_toEndOf="@id/mapContainer" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" >
+
+        <TextView
+            android:id="@+id/txtMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginBottom="20dp"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

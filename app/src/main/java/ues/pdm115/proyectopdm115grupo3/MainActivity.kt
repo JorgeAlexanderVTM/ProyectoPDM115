@@ -1,14 +1,18 @@
 package ues.pdm115.proyectopdm115grupo3
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -29,12 +33,14 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
 
+    private val LOCATION_PERMISSION_REQUEST_CODE = 100
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         enableEdgeToEdge()
-
+        verificarPermisosUbicacion()
         // Configura el Toolbar
         setSupportActionBar(binding.toolbar)
 
@@ -130,6 +136,36 @@ class MainActivity : AppCompatActivity() {
 
     fun navigateToLoginGraph() {
         navController.setGraph(R.navigation.nav_login_graph)
+    }
+
+    private fun verificarPermisosUbicacion() {
+        val permisosNecesarios = arrayOf(
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        )
+
+        val permisosNoConcedidos = permisosNecesarios.filter {
+            ContextCompat.checkSelfPermission(this, it) != PackageManager.PERMISSION_GRANTED
+        }
+
+        if (permisosNoConcedidos.isNotEmpty()) {
+            ActivityCompat.requestPermissions(this, permisosNoConcedidos.toTypedArray(), LOCATION_PERMISSION_REQUEST_CODE)
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
+            if (grantResults.isNotEmpty() && grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
+            } else {
+                Toast.makeText(this, "Los permisos de ubicación son necesarios para continuar.", Toast.LENGTH_LONG).show()
+            }
+        }
     }
 }
 

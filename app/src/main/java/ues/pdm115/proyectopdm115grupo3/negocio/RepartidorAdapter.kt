@@ -8,26 +8,21 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
-import com.google.android.material.shape.ShapeAppearanceModel
 import ues.pdm115.proyectopdm115grupo3.R
+import ues.pdm115.proyectopdm115grupo3.models.UsuarioRol
 
-// Clase modelo para los datos
-data class Repartidor(
-    val id: String,
-    val nombreRepartidor: String,
-    val estado: String,
-    val imagenUrl: String?
-)
 
 interface OnRepartidorClickListener {
     fun onAsignarClick(position: Int)
 }
 
-
 class RepartidorAdapter(
-    private val repartidores: List<Repartidor>,
+    private val repartidores: List<UsuarioRol>,
     private val listener: OnRepartidorClickListener
 ) : RecyclerView.Adapter<RepartidorAdapter.RepartidoresViewHolder>() {
+
+
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepartidoresViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -37,11 +32,11 @@ class RepartidorAdapter(
 
     override fun onBindViewHolder(holder: RepartidoresViewHolder, position: Int) {
         val repartidor = repartidores[position]
-        holder.id.text = repartidor.id
-        holder.nombreRepartidor.text = repartidor.nombreRepartidor
-        holder.estado.text = repartidor.estado
+        holder.id.text = repartidor.idUsuario.toString()
+        holder.nombreRepartidor.text = repartidor.nombrePersonal
+        holder.estado.text = repartidor.correo
         Glide.with(holder.itemView.context)
-            .load(repartidor.imagenUrl)
+            .load(R.drawable.__default)
             .error(R.drawable.__default)
             .into(holder.imagenUrl)
     }

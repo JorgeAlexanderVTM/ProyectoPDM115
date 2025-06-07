@@ -107,7 +107,7 @@ class LoginUser : Fragment() {
 
                     }
                 } else {
-                    Toast.makeText(context, "Error del servidor ", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Parece que hubo un problema, intetalo mas tarde", Toast.LENGTH_SHORT).show()
                 }
             }
         })

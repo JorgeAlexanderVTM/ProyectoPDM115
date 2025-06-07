@@ -132,7 +132,7 @@ class RegisterRepartidor : Fragment() {
                         binding.containerMessage.visibility = View.GONE
                     }
                 } else {
-                    Toast.makeText(requireContext(), "Credenciales inválidas", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Parece que hubo un problema, intetalo mas tarde", Toast.LENGTH_SHORT).show()
                 }
             }
         })

@@ -1,6 +1,11 @@
 package ues.pdm115.proyectopdm115grupo3.negocio
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.os.Bundle
+import android.text.Html
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.Menu
@@ -11,11 +16,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -23,22 +29,25 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ues.pdm115.proyectopdm115grupo3.DataStoreManager
 import ues.pdm115.proyectopdm115grupo3.MainActivity
 import ues.pdm115.proyectopdm115grupo3.R
-import ues.pdm115.proyectopdm115grupo3.comprador.Pedidos
-import ues.pdm115.proyectopdm115grupo3.comprador.PedidosAdapter
 import ues.pdm115.proyectopdm115grupo3.databinding.FragmentRastrearEnvioMapBinding
+import ues.pdm115.proyectopdm115grupo3.models.UsuarioRol
+import kotlin.getValue
 
 class RastrearEnvioMap : Fragment(), OnRepartidorClickListener, OnMapReadyCallback  {
 
     private var _binding: FragmentRastrearEnvioMapBinding? = null
     private val binding get() = _binding!!
-
-    private lateinit var repartidoreData: List<Repartidor>
     private lateinit var googleMap: GoogleMap // Variable para almacenar la instancia del mapa
+
+    private val args: RastrearEnvioMapArgs by navArgs()
+
+    private var usuariosData: List<UsuarioRol>? = null
+
+    private val viewModel: RastrearEnvioMapViewModel by viewModels()
 
 
     override fun onCreateView(
@@ -51,8 +60,11 @@ class RastrearEnvioMap : Fragment(), OnRepartidorClickListener, OnMapReadyCallba
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // Muestra el ProgressBar justo antes de iniciar la carga del mapa
-        binding.progressBarMap.visibility = View.VISIBLE
+
+        lifecycleScope.launch {
+            viewModel.verUsuariosByRoles("Repartidor")
+        }
+        observarUsuariosRoles()
 
         binding.btnAsignarRepartidor.setOnClickListener {
             if(binding.btnAsignarRepartidor.text == "Asignar repartidor"){
@@ -77,32 +89,31 @@ class RastrearEnvioMap : Fragment(), OnRepartidorClickListener, OnMapReadyCallba
         }
 
         binding.btnCopiarCodigo.setOnClickListener {
+            val texto = binding.txtCodigoPaquete.text.toString()
+            val clipboard = requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val clip = ClipData.newPlainText("Código de Paquete", texto)
+            clipboard.setPrimaryClip(clip)
             Toast.makeText(context,"Código copiado", Toast.LENGTH_SHORT).show()
         }
 
         binding.repartidoreRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        repartidoreData = listOf(
-            Repartidor("1", "Carlos Gabriel Mendoza", "Disponible", null),
-            Repartidor("2", "Ana Sofía Ramírez", "Disponible", null),
-            Repartidor("3", "José Luis Pérez", "Disponible", null),
-            Repartidor("4", "María Fernanda López", "Disponible", null),
-            Repartidor("5", "Juan Carlos Vásquez", "Disponible", null),
-            Repartidor("6", "Karla Patricia Gómez", "Disponible", null),
-            Repartidor("7", "Luis Fernando Ortiz", "Disponible", null),
-            Repartidor("8", "Claudia Beatriz Sánchez", "Disponible", null),
-            Repartidor("9", "Ricardo Antonio Cruz", "Disponible", null),
-            Repartidor("10", "Laura Isabel Torres", "Disponible", null),
-            Repartidor("11", "Manuel Esteban Rivera", "Disponible", null)
-        )
-        val adapter = RepartidorAdapter(repartidoreData, this)
-        binding.repartidoreRecyclerView.adapter = adapter
-        binding.txtCodigoPaquete.text = "1223-22333" //Codigo recibido por API REST
+
+        binding.txtCodigoPaquete.text = args.codigoSeguro
+        val nombreDestinatario = args.nombreDestinatario
+        val numeroSeguimiento = args.numeroSeguimiento
+        val nombreRepartidor = args.nombreRepartidor
+        val htmlTexto = "<b>Nombre: $nombreDestinatario</b>" +
+                        "<br><small>Repartidor: $nombreRepartidor</small>" +
+                        "<br><small><i>Numero seguimiento: $numeroSeguimiento</i></small>"
+        binding.txtTitulo.text = Html.fromHtml(htmlTexto, Html.FROM_HTML_MODE_LEGACY)
 
         inicializarMapaGoogle()
         inicializarToolbar()
 
-
+        if(args.nombreRepartidor == " "){
+            binding.btnAsignarRepartidor.visibility = View.VISIBLE
+        }
     }
 
     private fun inicializarToolbar(){
@@ -130,6 +141,62 @@ class RastrearEnvioMap : Fragment(), OnRepartidorClickListener, OnMapReadyCallba
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
+    private fun observarUsuariosRoles() {
+        viewModel.responseResult.observe(viewLifecycleOwner) { response ->
+            response?.let {
+                usuariosData = it.data ?: emptyList()
+                val adapter = RepartidorAdapter(usuariosData!!, this)
+                binding.repartidoreRecyclerView.adapter = adapter
+            }
+        }
+
+        viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            binding.containerProgressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+        }
+
+        viewModel.errorMessage.observe(viewLifecycleOwner) { message ->
+            if (!message.isNullOrBlank()) {
+                binding.containerMessage.visibility = View.VISIBLE
+                val html = "<html><body><h1>Servicio suspendido</h1><p>Intentalo mas tarde.</p></body></html>"
+                binding.txtMessage.text = Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY)
+                binding.txtMessage.textSize = 20f
+                //Toast.makeText(requireContext(), "Error al cargar direcciones: $message", Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
+    private fun observarActualizacionRepartidor() {
+        viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            binding.containerProgressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+        }
+
+        viewModel.errorMessage.observe(viewLifecycleOwner) { message ->
+            if (!message.isNullOrBlank()) {
+                binding.containerMessage.visibility = View.VISIBLE
+                val html = "<html><body><h1>Servicio suspendido</h1><p>Intentalo más tarde.</p></body></html>"
+                binding.txtMessage.text = Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY)
+                binding.txtMessage.textSize = 20f
+            }
+        }
+
+        viewModel.updateResult.observe(viewLifecycleOwner) { updateResponse ->
+            updateResponse?.let {
+                Toast.makeText(requireContext(), "Repartidor asignado con éxito", Toast.LENGTH_SHORT).show()
+                // Muestra el Toast y oculta elementos de la UI
+                binding.mapContainer.visibility = View.VISIBLE
+                binding.asignarRepartidorVista.visibility = View.GONE
+                binding.btnAsignarRepartidor.visibility = View.GONE
+                val nombreDestinatario = args.nombreDestinatario
+                val numeroSeguimiento = args.numeroSeguimiento
+                val nombreRepartidor = args.nombreRepartidor
+                val htmlTexto = "<b>Nombre: $nombreDestinatario</b>" +
+                        "<br><small>Repartidor: $nombreRepartidor</small>" +
+                        "<br><small><i>Numero seguimiento: $numeroSeguimiento</i></small>"
+                binding.txtTitulo.text = Html.fromHtml(htmlTexto, Html.FROM_HTML_MODE_LEGACY)
+            }
+        }
+    }
+
     private fun inicializarMapaGoogle(){
         val mapFragment = childFragmentManager.findFragmentById(binding.mapContainer.id) as SupportMapFragment?
         // Si el fragmento del mapa no existe, créalo y agrégalo
@@ -146,37 +213,48 @@ class RastrearEnvioMap : Fragment(), OnRepartidorClickListener, OnMapReadyCallba
     }
 
     override fun onAsignarClick(position: Int) {
-        val repartidor = repartidoreData[position]
-        Toast.makeText(requireContext(), "Asignaste a ${repartidor.nombreRepartidor}", Toast.LENGTH_SHORT).show()
+        val repartidor = usuariosData!![position]
 
-        binding.mapContainer.visibility = View.VISIBLE
-        binding.asignarRepartidorVista.visibility = View.GONE
-        binding.btnAsignarRepartidor.visibility = View.GONE
+        // Verifica que el id del envío no esté vacío o nulo
+        if (!args.idEnvio.isNullOrEmpty()) {
+            // Actualiza el repartidor
+            lifecycleScope.launch {
+                viewModel.actualizarEnvioRepartidor(repartidor.idUsuario, args.idEnvio.toInt())
+            }
+            // Observa la actualización
+            observarActualizacionRepartidor()
+        }
     }
 
     override fun onMapReady(p0: GoogleMap) {
         lifecycleScope.launch(Dispatchers.Main) {
-            binding.progressBarMap.visibility = View.GONE
+            binding.containerProgressBar.visibility = View.GONE
             googleMap = p0
 
-            // Ejemplo: Añadir un marcador en San Salvador y mover la cámara
-            val sanSalvador = LatLng(13.6929, -89.2182) // Coordenadas de San Salvador
-            googleMap.addMarker(
-                MarkerOptions().position(sanSalvador).title("Marcador en San Salvador")
-            )
-            googleMap.moveCamera(
-                CameraUpdateFactory.newLatLngZoom(
-                    sanSalvador,
-                    12f
+            if (args.latitud != null && args.longitud != null) {
+                val ubicacion = LatLng(args.latitud.toDouble(), args.longitud.toDouble())
+                googleMap.moveCamera(
+                    CameraUpdateFactory.newLatLngZoom(
+                        ubicacion,
+                        15f
+                    )
                 )
-            ) // Zoom a nivel de ciudad
-
+                googleMap.addMarker(
+                    MarkerOptions().position(ubicacion).title("Ubicación destinatario")
+                )
+            }else{
+                val sanSalvador = LatLng(13.6929, -89.2182)
+                googleMap.moveCamera(
+                    CameraUpdateFactory.newLatLngZoom(
+                        sanSalvador,
+                        15f
+                    )
+                )
+            }
             // Habilitar controles de zoom (opcional)
             googleMap.uiSettings.isZoomControlsEnabled = true
             // Habilitar gestos de zoom (opcional)
             googleMap.uiSettings.isZoomGesturesEnabled = true
-
-            // Puedes añadir más configuraciones o lógica aquí
         }
     }
 

@@ -44,13 +44,26 @@
 
 
         <argument
-            android:name="codigoEnvio"
+            android:name="idEnvio"
             app:argType="string" />
         <argument
-            android:name="nombreComprador"
+            android:name="codigoSeguro"
+            app:argType="string" />
+        <argument
+            android:name="numeroSeguimiento"
+            app:argType="string" />
+        <argument
+            android:name="nombreDestinatario"
             app:argType="string" />
         <argument
             android:name="nombreRepartidor"
+            app:argType="string"
+            app:nullable="true"/>
+        <argument
+            android:name="longitud"
+            app:argType="string"/>
+        <argument
+            android:name="latitud"
             app:argType="string" />
 
     </fragment>

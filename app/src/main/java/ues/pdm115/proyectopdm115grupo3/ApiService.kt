@@ -1,13 +1,21 @@
 package ues.pdm115.proyectopdm115grupo3
 
+import com.google.gson.annotations.SerializedName
 import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
+import retrofit2.http.Path
+import ues.pdm115.proyectopdm115grupo3.models.AllEnviosResponse
+import ues.pdm115.proyectopdm115grupo3.models.AllUsuarioRolResponse
 import ues.pdm115.proyectopdm115grupo3.models.DireccionResponse
 import ues.pdm115.proyectopdm115grupo3.models.EnvioResponse
 import ues.pdm115.proyectopdm115grupo3.models.UnidadesResponse
+import ues.pdm115.proyectopdm115grupo3.models.UpdateRepartidorRequest
+import ues.pdm115.proyectopdm115grupo3.models.UpdateRepartidorResponse
 import ues.pdm115.proyectopdm115grupo3.models.UsuarioAuthResponse
 import ues.pdm115.proyectopdm115grupo3.models.UsuarioCompradorResponse
 import ues.pdm115.proyectopdm115grupo3.models.UsuarioNegocioResponse
@@ -71,8 +79,9 @@ interface ApiService {
         @Field("latitud") latitud: Double,
         @Field("ubicacion_textual") ubicacionTextual: String,
         @Field("detalle_envio") detalleEnvio: String,
-        @Field("nombre_cliente") nombreCliente: String,
-        @Field("numero_telefono_cliente") numeroTelefonoCliente: Int,
+        @Field("nombre_remitente") nombreRemitente: String,
+        @Field("nombre_destinatario") nombreDestinatario: String,
+        @Field("numero_telefono_destinatario") numeroTelefonoDestinatario: Int,
         @Field("id_departamento") idDepartamento: Int,
         @Field("id_municipio") idMunicipio: Int,
         @Field("id_distrito") idDistrito: Int,
@@ -86,5 +95,34 @@ interface ApiService {
 
     @GET("unidades")
     suspend fun getUnidadesDeMedida(): Response<UnidadesResponse>
+
+    @GET("envios")
+    suspend fun getDetalleEnvios(): Response<AllEnviosResponse>
+
+    @GET("envios/{id_remitente}")
+    suspend fun getDetalleEnviosId(
+        @Path("id_remitente") idRemitente: Int
+    ): Response<AllEnviosResponse>
+
+    @GET("envios/numeroseguimiento/{numero_seguimiento}")
+    suspend fun getDetalleEnviosNumeroSeguimiento(
+        @Path("numero_seguimiento") numeroSeguimiento: String
+    ): Response<AllEnviosResponse>
+
+
+    @GET("envios/nombre/{nombre_remitente}")
+    suspend fun getDetalleEnviosNombre(
+        @Path("nombre_remitente") nombreRemitente: String
+    ): Response<AllEnviosResponse>
+
+    @GET("usuarios/rol/{nombre_rol}")
+    suspend fun getUsuariosByRoles(
+        @Path("nombre_rol") nombreRol: String
+    ): Response<AllUsuarioRolResponse>
+
+    @PUT("envios/repartidor")
+    suspend fun actualizarRepartidor(
+        @Body request: UpdateRepartidorRequest
+    ): Response<UpdateRepartidorResponse>
 
 }

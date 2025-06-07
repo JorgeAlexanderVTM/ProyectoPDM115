@@ -1,6 +1,9 @@
 package ues.pdm115.proyectopdm115grupo3.negocio // Ajusta tu paquete
 
+import android.content.Context
 import android.os.Bundle
+import android.text.Html
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -9,12 +12,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ues.pdm115.proyectopdm115grupo3.DataStoreManager
@@ -23,8 +35,9 @@ import ues.pdm115.proyectopdm115grupo3.R
 import ues.pdm115.proyectopdm115grupo3.SpinnerAdapter
 import ues.pdm115.proyectopdm115grupo3.databinding.FragmentIngresarEnvioBinding
 import ues.pdm115.proyectopdm115grupo3.hideKeyboard
+import kotlin.arrayOf
 
-class IngresarEnvio : Fragment() {
+class IngresarEnvio : Fragment(), OnMapReadyCallback {
 
     private lateinit var binding : FragmentIngresarEnvioBinding
     // ViewModel para datos de dirección (Departamentos, Municipios, Distritos)
@@ -35,6 +48,12 @@ class IngresarEnvio : Fragment() {
 
     // ViewModel para registrar el envío
     private val envioViewModel: IngresarEnvioViewModel by viewModels()
+
+    private var latitud: Double? = null
+    private var longitud: Double? = null
+    private var nombreRemitente: String? = null
+
+    private lateinit var googleMap: GoogleMap // Variable para almacenar la instancia del mapa
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,9 +66,13 @@ class IngresarEnvio : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        lifecycleScope.launch {
+            nombreRemitente = DataStoreManager.getUsername(requireContext())
+        }
+
         val editTexts = arrayOf(
-            binding.txtNombreCliente,
-            binding.txtNumeroContactoCliente,
+            binding.txtNombreDestinatario,
+            binding.txtNumeroContactoDestinatario,
             binding.txtUbicacionTextualCliente,
             binding.txtDetalleEnvio,
             binding.txtValorAnchoPaquete,
@@ -91,7 +114,113 @@ class IngresarEnvio : Fragment() {
                 sendEnvioData()
             }
         }
+
+        binding.containerUbicacion.setOnClickListener {
+
+            goneElementos()
+
+            val constraintSet = ConstraintSet()
+            constraintSet.clone(binding.containerPadre as ConstraintLayout)
+
+            constraintSet.connect(
+                binding.mapContainer.id, ConstraintSet.TOP,
+                binding.containerPadre.id, ConstraintSet.TOP
+            )
+            constraintSet.connect(
+                binding.mapContainer.id, ConstraintSet.START,
+                binding.containerPadre.id, ConstraintSet.START
+            )
+            constraintSet.connect(
+                binding.mapContainer.id, ConstraintSet.END,
+                binding.containerPadre.id, ConstraintSet.END
+            )
+            constraintSet.connect(
+                binding.mapContainer.id, ConstraintSet.BOTTOM,
+                binding.containerPadre.id, ConstraintSet.BOTTOM
+            )
+
+            constraintSet.applyTo(binding.containerPadre as ConstraintLayout)
+
+            binding.containerPadre.setPadding(0,0,0,0)
+            inicializarMapaGoogle()
+            binding.mapContainer.visibility = View.VISIBLE
+            binding.btnSeleccionarUbicacion.visibility = View.VISIBLE
+        }
+
+
+        binding.btnSeleccionarUbicacion.setOnClickListener {
+
+            visibleElementos()
+
+            val constraintSet = ConstraintSet()
+            constraintSet.clone(binding.containerPadre as ConstraintLayout)
+
+            constraintSet.connect(
+                binding.mapContainer.id, ConstraintSet.TOP,
+                binding.containerUbicacion.id, ConstraintSet.TOP
+            )
+            constraintSet.connect(
+                binding.mapContainer.id, ConstraintSet.START,
+                binding.containerUbicacion.id, ConstraintSet.START
+            )
+            constraintSet.connect(
+                binding.mapContainer.id, ConstraintSet.END,
+                binding.containerUbicacion.id, ConstraintSet.END
+            )
+            constraintSet.connect(
+                binding.mapContainer.id, ConstraintSet.BOTTOM,
+                binding.containerUbicacion.id, ConstraintSet.BOTTOM
+            )
+
+            constraintSet.applyTo(binding.containerPadre as ConstraintLayout)
+
+            binding.containerPadre.setPadding(
+                20.toPx(requireContext()),
+                20.toPx(requireContext()),
+                20.toPx(requireContext()),
+                200.toPx(requireContext())
+            )
+            googleMap.setOnMapClickListener(null)
+            googleMap.uiSettings.isZoomControlsEnabled = false
+            googleMap.uiSettings.isZoomGesturesEnabled = false
+            binding.btnSeleccionarUbicacion.visibility = View.GONE
+            binding.btnReseleccionar.visibility = View.VISIBLE
+        }
+
+        binding.btnReseleccionar.setOnClickListener {
+            goneElementos()
+
+            val constraintSet = ConstraintSet()
+            constraintSet.clone(binding.containerPadre as ConstraintLayout)
+
+            constraintSet.connect(
+                binding.mapContainer.id, ConstraintSet.TOP,
+                binding.containerPadre.id, ConstraintSet.TOP
+            )
+            constraintSet.connect(
+                binding.mapContainer.id, ConstraintSet.START,
+                binding.containerPadre.id, ConstraintSet.START
+            )
+            constraintSet.connect(
+                binding.mapContainer.id, ConstraintSet.END,
+                binding.containerPadre.id, ConstraintSet.END
+            )
+            constraintSet.connect(
+                binding.mapContainer.id, ConstraintSet.BOTTOM,
+                binding.containerPadre.id, ConstraintSet.BOTTOM
+            )
+
+            constraintSet.applyTo(binding.containerPadre as ConstraintLayout)
+
+            inicializarMapaGoogle()
+            binding.containerPadre.setPadding(0,0,0,0)
+            binding.mapContainer.visibility = View.VISIBLE
+            binding.btnSeleccionarUbicacion.isEnabled = false
+            binding.btnSeleccionarUbicacion.visibility = View.VISIBLE
+        }
     }
+
+
 
     private fun setupSpinner(spinner: android.widget.Spinner, items: List<Pair<Int, String>>) {
         val itemNames = items.map { it.second }.toTypedArray()
@@ -194,11 +323,28 @@ class IngresarEnvio : Fragment() {
         }
 
         direccionViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            binding.containerProgressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+            binding.containerFormularioEnvio.alpha = if (isLoading) 0.5f else 1.0f
+            binding.containerFormularioEnvio.isClickable = !isLoading
+            binding.containerFormularioEnvio.isFocusable = !isLoading
+            setFormEnabled(!isLoading)
+        }
+
+        unidadesViewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            binding.containerProgressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+            binding.containerFormularioEnvio.alpha = if (isLoading) 0.5f else 1.0f
+            binding.containerFormularioEnvio.isClickable = !isLoading
+            binding.containerFormularioEnvio.isFocusable = !isLoading
+            setFormEnabled(!isLoading)
         }
 
         direccionViewModel.errorMessage.observe(viewLifecycleOwner) { message ->
             if (!message.isNullOrBlank()) {
-                Toast.makeText(requireContext(), "Error al cargar direcciones: $message", Toast.LENGTH_LONG).show()
+                binding.containerMessage.visibility = View.VISIBLE
+                val html = "<html><body><h1>Servicio suspendido</h1><p>Intentalo mas tarde.</p></body></html>"
+                binding.txtMessage.text = Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY)
+                binding.txtMessage.textSize = 20f
+                //Toast.makeText(requireContext(), "Error al cargar direcciones: $message", Toast.LENGTH_LONG).show()
             }
         }
     }
@@ -218,11 +364,13 @@ class IngresarEnvio : Fragment() {
                     if (result.estado == "Exito") {
                         binding.containerMessage.visibility = View.VISIBLE
                         binding.txtMessage.text = result.mensaje
+                        binding.txtMessage.textSize = 20f
                         Toast.makeText(requireContext(), result.mensaje, Toast.LENGTH_LONG).show()
                         clearForm()
                     } else {
                         binding.containerMessage.visibility = View.VISIBLE
                         binding.txtMessage.text = result.mensaje
+                        binding.txtMessage.textSize = 20f
                         Toast.makeText(requireContext(), "Error: ${result.mensaje}", Toast.LENGTH_LONG).show()
                     }
 
@@ -246,8 +394,8 @@ class IngresarEnvio : Fragment() {
 
     // Habilita o deshabilita los elementos de entrada del formulario
     private fun setFormEnabled(enabled: Boolean) {
-        binding.txtNombreCliente.isEnabled = enabled
-        binding.txtNumeroContactoCliente.isEnabled = enabled
+        binding.txtNombreDestinatario.isEnabled = enabled
+        binding.txtNumeroContactoDestinatario.isEnabled = enabled
         binding.txtUbicacionTextualCliente.isEnabled = enabled
         binding.spinnerDepartamento.isEnabled = enabled
         binding.spinnerMunicipio.isEnabled = enabled
@@ -264,14 +412,15 @@ class IngresarEnvio : Fragment() {
 
     private fun validateInputs(): Boolean {
         // Validación básica: comprobar que los campos no estén vacíos
-        if (binding.txtNombreCliente.text.isNullOrBlank() ||
-            binding.txtNumeroContactoCliente.text.isNullOrBlank() ||
+        if (binding.txtNombreDestinatario.text.isNullOrBlank() ||
+            binding.txtNumeroContactoDestinatario.text.isNullOrBlank() ||
             binding.txtUbicacionTextualCliente.text.isNullOrBlank() ||
             binding.txtDetalleEnvio.text.isNullOrBlank() ||
             binding.txtValorAnchoPaquete.text.isNullOrBlank() ||
             binding.txtValorAltoPaquete.text.isNullOrBlank() ||
             binding.txtValorLargoPaquete.text.isNullOrBlank() ||
-            binding.txtValorPesoPaquete.text.isNullOrBlank()
+            binding.txtValorPesoPaquete.text.isNullOrBlank() ||
+            latitud == null || longitud == null
         ) {
             Toast.makeText(requireContext(), "Por favor, complete todos los campos.", Toast.LENGTH_SHORT).show()
             return false
@@ -295,7 +444,7 @@ class IngresarEnvio : Fragment() {
             binding.txtValorAltoPaquete.text.toString().toDouble()
             binding.txtValorLargoPaquete.text.toString().toDouble()
             binding.txtValorPesoPaquete.text.toString().toDouble()
-            binding.txtNumeroContactoCliente.text.toString().toInt() // Si es un int en el backend
+            binding.txtNumeroContactoDestinatario.text.toString().toInt() // Si es un int en el backend
         } catch (e: NumberFormatException) {
             Toast.makeText(requireContext(), "Por favor, ingrese valores numéricos válidos en los campos de dimensiones, peso y número de contacto.", Toast.LENGTH_SHORT).show()
             return false
@@ -305,13 +454,11 @@ class IngresarEnvio : Fragment() {
     }
 
     private fun sendEnvioData() {
-        val longitud = 0.0 // Aquí deberías obtener la longitud real (GPS)
-        val latitud = 0.0 // Aquí deberías obtener la latitud real (GPS)
 
         val ubicacionTextual = binding.txtUbicacionTextualCliente.text.toString()
         val detalleEnvio = binding.txtDetalleEnvio.text.toString()
-        val nombreCliente = binding.txtNombreCliente.text.toString()
-        val numeroTelefonoCliente = binding.txtNumeroContactoCliente.text.toString().toInt()
+        val nombreDestinatario = binding.txtNombreDestinatario.text.toString()
+        val numeroTelefonoDestinatario = binding.txtNumeroContactoDestinatario.text.toString().toInt()
 
         val idDepartamento = direccionViewModel.selectedDepartamentoId.value ?: 0
         val idMunicipio = direccionViewModel.selectedMunicipioId.value ?: 0
@@ -327,12 +474,13 @@ class IngresarEnvio : Fragment() {
 
         // Llamar al ViewModel para registrar el envío
         envioViewModel.registrar(
-            longitud,
-            latitud,
+            longitud!!,
+            latitud!!,
             ubicacionTextual,
             detalleEnvio,
-            nombreCliente,
-            numeroTelefonoCliente,
+            nombreRemitente!!,
+            nombreDestinatario,
+            numeroTelefonoDestinatario,
             idDepartamento,
             idMunicipio,
             idDistrito,
@@ -368,9 +516,9 @@ class IngresarEnvio : Fragment() {
     }
 
     // Función para limpiar los campos del formulario
-    suspend private fun clearForm() {
-        binding.txtNombreCliente.text?.clear()
-        binding.txtNumeroContactoCliente.text?.clear()
+    private fun clearForm() {
+        binding.txtNombreDestinatario.text?.clear()
+        binding.txtNumeroContactoDestinatario.text?.clear()
         binding.txtUbicacionTextualCliente.text?.clear()
         binding.txtDetalleEnvio.text?.clear()
         binding.txtValorAnchoPaquete.text?.clear()
@@ -384,6 +532,122 @@ class IngresarEnvio : Fragment() {
         binding.spinnerDistrito.setSelection(0)
         binding.spinnerUnidadTamanio.setSelection(0)
         binding.spinnerUnidadPeso.setSelection(0)
+
+        //
+        binding.mapContainer.visibility = View.GONE
+        latitud = null
+        longitud = null
+        googleMap.clear()
+        binding.btnReseleccionar.visibility = View.GONE
+    }
+
+    private fun inicializarMapaGoogle(){
+
+        val mapFragment = childFragmentManager.findFragmentById(binding.mapContainer.id) as SupportMapFragment?
+        if (mapFragment == null) {
+            val newMapFragment = SupportMapFragment.newInstance()
+            childFragmentManager.beginTransaction()
+                .replace(binding.mapContainer.id, newMapFragment)
+                .commit()
+            newMapFragment.getMapAsync(this)
+        } else {
+            mapFragment.getMapAsync(this)
+        }
+
+    }
+
+    override fun onMapReady(p0: GoogleMap) {
+        lifecycleScope.launch(Dispatchers.Main) {
+            binding.progressBar.visibility = View.GONE
+            googleMap = p0
+            googleMap.uiSettings.isZoomControlsEnabled = true
+            googleMap.uiSettings.isZoomGesturesEnabled = true
+
+            if (latitud != null && longitud != null) {
+                val ubicacionSeleccionada = LatLng(latitud!!, longitud!!)
+                googleMap.moveCamera(
+                    CameraUpdateFactory.newLatLngZoom(
+                        ubicacionSeleccionada,
+                        15f
+                    )
+                )
+            }else{
+                val sanSalvador = LatLng(13.6929, -89.2182)
+                googleMap.moveCamera(
+                    CameraUpdateFactory.newLatLngZoom(
+                        sanSalvador,
+                        15f
+                    )
+                )
+            }
+
+            googleMap.setOnMapClickListener { latLng ->
+                googleMap.clear()
+
+                googleMap.addMarker(
+                    MarkerOptions()
+                        .position(latLng)
+                        .title("Ubicación seleccionada")
+                )
+                longitud = latLng.longitude
+                latitud = latLng.latitude
+
+                binding.btnSeleccionarUbicacion.isEnabled = true
+            }
+        }
+    }
+
+    private fun goneElementos(){
+        val elements = arrayOf(
+            binding.txtNombreDestinatario,
+            binding.txtNumeroContactoDestinatario,
+            binding.txtUbicacionTextualCliente,
+            binding.txtDetalleEnvio,
+            binding.txtValorAnchoPaquete,
+            binding.txtValorAltoPaquete,
+            binding.txtValorLargoPaquete,
+            binding.txtValorPesoPaquete,
+            binding.spinnerDepartamento,
+            binding.spinnerMunicipio,
+            binding.spinnerDistrito,
+            binding.spinnerUnidadTamanio,
+            binding.spinnerUnidadPeso,
+            binding.containerUbicacion,
+            binding.titulo
+        )
+
+        for (element in elements) {
+            element.visibility = View.GONE
+        }
+    }
+
+    private fun visibleElementos(){
+        val elements = arrayOf(
+            binding.txtNombreDestinatario,
+            binding.txtNumeroContactoDestinatario,
+            binding.txtUbicacionTextualCliente,
+            binding.txtDetalleEnvio,
+            binding.txtValorAnchoPaquete,
+            binding.txtValorAltoPaquete,
+            binding.txtValorLargoPaquete,
+            binding.txtValorPesoPaquete,
+            binding.spinnerDepartamento,
+            binding.spinnerMunicipio,
+            binding.spinnerDistrito,
+            binding.spinnerUnidadTamanio,
+            binding.spinnerUnidadPeso,
+            binding.containerUbicacion,
+            binding.titulo
+        )
+
+        for (element in elements) {
+            element.visibility = View.VISIBLE
+        }
+    }
+
+
+    fun Int.toPx(context: Context): Int {
+        return (this * context.resources.displayMetrics.density).toInt()
     }
 }
 

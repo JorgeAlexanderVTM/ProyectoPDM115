@@ -7,17 +7,12 @@ import android.widget.TextView
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import ues.pdm115.proyectopdm115grupo3.R
+import ues.pdm115.proyectopdm115grupo3.models.DetalleEnvio
 
 
 // Clase modelo para los datos
-data class Pedidos(
-    val idPedido: String,
-    val fechaEntrega: String,
-    val observaciones: String
-)
-
 class PedidosAdapter(
-    private val pedidos: List<Pedidos>,
+    private val pedidos: List<DetalleEnvio>,
     private val navController: NavController
 ) :
     RecyclerView.Adapter<PedidosAdapter.PedidoViewHolder>() {
@@ -30,14 +25,22 @@ class PedidosAdapter(
 
     override fun onBindViewHolder(holder: PedidoViewHolder, position: Int) {
         val pedido = pedidos[position]
-        holder.tvIdPedido.text = pedido.idPedido
-        holder.tvFechaEntrega.text = pedido.fechaEntrega
-        holder.tvObservaciones.text = pedido.observaciones
+        holder.tvNumeroTelefonico.text = "Numero telefónico: " + pedido.numeroTelefonoDestinatario.toString()
+        holder.tvNombreDestinatario.text = pedido.nombreDestinatario
+        holder.tvObservaciones.text = pedido.detalleEnvio
 
         holder.itemView.setOnClickListener {
             val action = LocatePackageUserDirections
                 .actionLocatePackageUserFragmentToLocatePackageUserFragmentMap(
-                    pedido.idPedido, pedido.fechaEntrega, pedido.observaciones
+                    pedido.idEnvio.toString(),
+                    "Numero telefónico: " + pedido.numeroTelefonoDestinatario.toString(),
+                    pedido.nombreDestinatario,
+                    pedido.detalleEnvio,
+                    pedido.longitudRepartidor.toString(),
+                    pedido.latitudRepartidor.toString(),
+                    pedido.numeroSeguimiento,
+                    pedido.codigoSeguimiento,
+                    pedido.nombreRepartidor
                 )
             navController.navigate(action)
         }
@@ -46,8 +49,8 @@ class PedidosAdapter(
     override fun getItemCount(): Int = pedidos.size
 
     class PedidoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val tvIdPedido: TextView = itemView.findViewById(R.id.tv_id_codigo)
-        val tvFechaEntrega: TextView = itemView.findViewById(R.id.tv_fecha_entrega)
+        val tvNumeroTelefonico: TextView = itemView.findViewById(R.id.tv_numero_telefonico)
+        val tvNombreDestinatario: TextView = itemView.findViewById(R.id.tv_nombre_destinatario)
         val tvObservaciones: TextView = itemView.findViewById(R.id.tv_observaciones)
     }
 

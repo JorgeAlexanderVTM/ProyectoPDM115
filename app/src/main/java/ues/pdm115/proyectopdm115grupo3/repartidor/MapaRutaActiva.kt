@@ -24,7 +24,6 @@ import ues.pdm115.proyectopdm115grupo3.DataStoreManager
 import ues.pdm115.proyectopdm115grupo3.MainActivity
 import ues.pdm115.proyectopdm115grupo3.R
 import ues.pdm115.proyectopdm115grupo3.databinding.FragmentMapaRutaActivaBinding
-import ues.pdm115.proyectopdm115grupo3.negocio.Repartidor
 
 class MapaRutaActiva : Fragment(), OnMapReadyCallback {
 

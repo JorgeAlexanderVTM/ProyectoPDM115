@@ -7,23 +7,18 @@ import android.widget.TextView
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import ues.pdm115.proyectopdm115grupo3.R
-
-// Clase modelo para los datos
-data class Envios(
-    val codigoEnvio: String,
-    val nombreComprador: String,
-    val nombreRepartidor: String
-)
+import ues.pdm115.proyectopdm115grupo3.models.DetalleEnvio
+import kotlin.text.toDouble
 
 class EnviosAdapter(
-    private val envios: List<Envios>,
+    private val detalleEnvios: List<DetalleEnvio>,
     private val navController: NavController,
     private val clickListener: OnEnvioClickListener
 ) : RecyclerView.Adapter<EnviosAdapter.EnviosViewHolder>() {
 
     // Define la interfaz de callback aquí
     interface OnEnvioClickListener {
-        fun onEnvioClick(envio: Envios)
+        fun onEnvioClick(detalleEnvio: DetalleEnvio)
         fun onNavigateStarted() // <-- Nuevo método para indicar que la navegación ha comenzado
     }
 
@@ -35,10 +30,10 @@ class EnviosAdapter(
     }
 
     override fun onBindViewHolder(holder: EnviosViewHolder, position: Int) {
-        val envio = envios[position]
-        holder.tvCodigoEnvio.text = envio.codigoEnvio
-        holder.tvNombreComprador.text = envio.nombreComprador
-        holder.tvNombreRepartidor.text = envio.nombreRepartidor
+        val detalleEnvio = detalleEnvios[position]
+        holder.tvNumeroSeguimiento.text = detalleEnvio.numeroSeguimiento
+        holder.tvNombreDestinatario.text = detalleEnvio.nombreDestinatario
+        holder.tvNombreRepartidor.text = detalleEnvio.nombreRepartidor
 
         holder.itemView.setOnClickListener {
             // Notificar al Fragmento que la navegación está a punto de comenzar
@@ -46,18 +41,24 @@ class EnviosAdapter(
 
             val action = RastrearEnvioDirections
                 .actionRastrearEnvioToRastrearEnvioMap(
-                    envio.codigoEnvio, envio.nombreComprador, envio.nombreRepartidor
+                    detalleEnvio.idEnvio.toString(),
+                    detalleEnvio.codigoSeguimiento,
+                    detalleEnvio.numeroSeguimiento,
+                    detalleEnvio.nombreDestinatario,
+                    detalleEnvio.nombreRepartidor,
+                    detalleEnvio.longitud.toString(),
+                    detalleEnvio.latitud.toString()
                 )
             navController.navigate(action)
         }
 
     }
 
-    override fun getItemCount(): Int = envios.size
+    override fun getItemCount(): Int = detalleEnvios.size
 
     class EnviosViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val tvCodigoEnvio: TextView = itemView.findViewById(R.id.txtCodigoEnvio)
-        val tvNombreComprador: TextView = itemView.findViewById(R.id.txtNombreComprador)
+        val tvNumeroSeguimiento: TextView = itemView.findViewById(R.id.txtNumeroSeguimiento)
+        val tvNombreDestinatario: TextView = itemView.findViewById(R.id.txtNombreDestinatario)
         val tvNombreRepartidor: TextView = itemView.findViewById(R.id.txtNombreRepartidor)
     }
 

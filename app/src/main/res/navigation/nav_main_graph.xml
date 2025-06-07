@@ -21,7 +21,10 @@
         app:menu="@menu/toolbar_menu">
 
         <argument
-            android:name="idCodigo"
+            android:name="idEnvio"
+            app:argType="string" />
+        <argument
+            android:name="numeroTelefonico"
             app:argType="string" />
         <argument
             android:name="fechaEntrega"
@@ -29,6 +32,22 @@
         <argument
             android:name="observaciones"
             app:argType="string" />
+        <argument
+            android:name="longitud"
+            app:argType="string" />
+        <argument
+            android:name="latitud"
+            app:argType="string" />
+        <argument
+            android:name="numeroSeguimiento"
+            app:argType="string" />
+        <argument
+            android:name="codigoSeguro"
+            app:argType="string" />
+        <argument
+            android:name="nombreRepartidor"
+            app:argType="string" />
+
 
     </fragment>
 

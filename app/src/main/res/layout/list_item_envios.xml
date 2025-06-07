@@ -25,12 +25,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:text="Comprador:"
+                android:text="Destinatario:"
                 android:textColor="@android:color/black"
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/txtNombreComprador"
+                android:id="@+id/txtNombreDestinatario"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Jorge Alexander Aquino"
@@ -57,12 +57,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:text="Código unico:"
+                android:text="Número de seguimiento:"
                 android:textColor="@android:color/black"
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/txtCodigoEnvio"
+                android:id="@+id/txtNumeroSeguimiento"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="MB6525897132CN"

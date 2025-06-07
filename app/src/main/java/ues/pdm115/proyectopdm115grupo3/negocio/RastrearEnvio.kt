@@ -2,6 +2,7 @@ package ues.pdm115.proyectopdm115grupo3.negocio
 
 import androidx.fragment.app.viewModels
 import android.os.Bundle
+import android.text.Html
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.Menu
@@ -13,27 +14,31 @@ import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ues.pdm115.proyectopdm115grupo3.DataStoreManager
 import ues.pdm115.proyectopdm115grupo3.MainActivity
 import ues.pdm115.proyectopdm115grupo3.R
-import ues.pdm115.proyectopdm115grupo3.comprador.Pedidos
-import ues.pdm115.proyectopdm115grupo3.comprador.PedidosAdapter
 import ues.pdm115.proyectopdm115grupo3.databinding.FragmentRastrearEnvioBinding
+import ues.pdm115.proyectopdm115grupo3.models.DetalleEnvio
 
-class RastrearEnvio : Fragment(), EnviosAdapter.OnEnvioClickListener  {
+class RastrearEnvio : Fragment() {
 
-    private lateinit var binding: FragmentRastrearEnvioBinding
+    private var _binding: FragmentRastrearEnvioBinding? = null
+    private val binding get() = _binding!!
+
+    private val viewModel: RastrearEnvioViewModel by viewModels()
+
+    private var nombreRemitente: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentRastrearEnvioBinding.inflate(inflater, container, false)
+        _binding = FragmentRastrearEnvioBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -41,40 +46,52 @@ class RastrearEnvio : Fragment(), EnviosAdapter.OnEnvioClickListener  {
         super.onViewCreated(view, savedInstanceState)
         binding.enviosRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
+        lifecycleScope.launch {
+            nombreRemitente = DataStoreManager.getUsername(requireContext())
+            viewModel.verEnviosNombreRemitente(nombreRemitente!!)
+        }
 
-        val enviosData = listOf(
-            Envios("EVF44F3345FJ", "Carlos Daniel Morena", "Daniela Sofia Quinteño"),
-            Envios("EVG55G1234KL", "Ana María López", "José Miguel Pérez"),
-            Envios("EVH66H5678MN", "Sofía Isabel Ramírez", "Luis Fernando Gómez"),
-            Envios("EVJ77I9012PQ", "Juan Carlos Hernández", "María Elena Vásquez"),
-            Envios("EVK88J3456RS", "Karla Patricia Méndez", "Ricardo Antonio Cruz"),
-            Envios("EVL99K7890TU", "Diego Armando Salazar", "Claudia Beatriz Ortiz"),
-            Envios("EVM11L2345VW", "Laura Fernanda Castro", "Eduardo José Martínez"),
-            Envios("EVN22M6789XY", "Gabriel Alejandro Ruiz", "Carmen Rosa Flores"),
-            Envios("EVP33N0123ZA", "Mónica Lisbeth Aguilar", "Francisco Javier Torres"),
-            Envios("EVQ44P4567BC", "Roberto Carlos Sánchez", "Patricia Guadalupe Rivas"),
-            Envios("EVR55Q8901DE", "Verónica Elizabeth Díaz", "Manuel Esteban Rivera")
-        )
-        val adapter = EnviosAdapter(enviosData, findNavController(), this)
-        binding.enviosRecyclerView.adapter = adapter
-
+        observarDetalleEnvios()
         inicializarToolbar()
     }
 
+    private fun observarDetalleEnvios(){
+        viewModel.responseResult.observe(viewLifecycleOwner) { response ->
+            response?.let {
+                val enviosData: List<DetalleEnvio> = it.data ?: emptyList()
+                val adapter = EnviosAdapter(enviosData, findNavController(), object : EnviosAdapter.OnEnvioClickListener {
+                    override fun onEnvioClick(detalleEnvio: DetalleEnvio) {
+                        // Aquí podrías hacer algo si se requiere
+                    }
 
-    // --- Implementación de la interfaz OnEnvioClickListener ---
-    override fun onEnvioClick(envio: Envios) {
-        // Esta función podría usarse para otras lógicas de clic si no implicaran navegación
-        // Para este caso, el clickListener.onNavigateStarted() es más relevante.
+                    override fun onNavigateStarted() {
+                        // Muestra el ProgressBar global antes de que comience la navegación
+                        binding.containerProgressBar.visibility = View.VISIBLE
+                        binding.globalProgressBar.visibility = View.VISIBLE
+                        // Opcional: deshabilitar interacciones con el RecyclerView si es necesario
+                        binding.enviosRecyclerView.isEnabled = false
+                        // Opcional: mostrar progress bar o bloquear UI
+                    }
+                })
+                binding.enviosRecyclerView.adapter = adapter
+            }
+        }
+
+        viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            binding.containerProgressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+        }
+
+        viewModel.errorMessage.observe(viewLifecycleOwner) { message ->
+            if (!message.isNullOrBlank()) {
+                binding.containerMessage.visibility = View.VISIBLE
+                val html = "<html><body><h1>Servicio suspendido</h1><p>Intentalo mas tarde.</p></body></html>"
+                binding.txtMessage.text = Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY)
+                binding.txtMessage.textSize = 20f
+                //Toast.makeText(requireContext(), "Error al cargar direcciones: $message", Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
-    override fun onNavigateStarted() {
-        // Muestra el ProgressBar global antes de que comience la navegación
-        binding.containerProgressBar.visibility = View.VISIBLE
-        binding.globalProgressBar.visibility = View.VISIBLE
-        // Opcional: deshabilitar interacciones con el RecyclerView si es necesario
-        binding.enviosRecyclerView.isEnabled = false
-    }
 
     private fun inicializarToolbar(){
         // Configura el MenuProvider para manejar el menú
@@ -99,6 +116,11 @@ class RastrearEnvio : Fragment(), EnviosAdapter.OnEnvioClickListener  {
                 }
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
 }

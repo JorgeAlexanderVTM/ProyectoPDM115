@@ -2,6 +2,29 @@ package ues.pdm115.proyectopdm115grupo3.models
 
 import com.google.gson.annotations.SerializedName
 
+data class UsuarioRol(
+    @SerializedName("id_usuario")
+    val idUsuario: Int,
+    @SerializedName("nombre_usuario")
+    val nombreUsuario: String,
+    @SerializedName("email_usuario")
+    val correo: String,
+    @SerializedName("nombre_personal")
+    val nombrePersonal: String,
+    @SerializedName("id_ubicacion")
+    val idUbicacion: Int,
+    @SerializedName("longitud")
+    val longitud: Double,
+    @SerializedName("latitud")
+    val latitud: Double,
+    @SerializedName("id_rol")
+    val idRol: Int,
+    @SerializedName("nombre_rol")
+    val nombreRol: String,
+    @SerializedName("descripcion")
+    val descripcion: String
+)
+
 data class UsuarioComprador(
     @SerializedName("nombre_usuario")
     val nombreUsuario: String,
@@ -87,4 +110,10 @@ data class UsuarioAuthResponse(
     @SerializedName("state") val estado: String,
     @SerializedName("message") val mensaje: String,
     @SerializedName("data") val data: UsuarioAuth
+)
+
+data class AllUsuarioRolResponse(
+    @SerializedName("state") val estado: String,
+    @SerializedName("message") val mensaje: String,
+    @SerializedName("data") val data: List<UsuarioRol>
 )
